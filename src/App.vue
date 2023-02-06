@@ -15,16 +15,8 @@ const obj: TestObj<string, number> = {
   <div>
     <GButton type="测试" />
     <!-- <GTag /> -->
-    {{ obj }}
-    <a class="float-left" href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg?url" class="logo vue" alt="Vue logo" />
-    </a>
   </div>
   <el-button type="primary">点击</el-button>
-  <HelloWorld msg="Vite + Vue" />
   <Refresh />
 </template>
 
