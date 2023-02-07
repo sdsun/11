@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+import { defineOptions } from 'unplugin-vue-define-options/macros';
 import { defineProps } from 'vue';
 defineProps<{
   type: string;
