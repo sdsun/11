@@ -11,6 +11,8 @@
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -19,6 +21,14 @@
     "noEmit": true,
     "types": ["element-plus/global", "unplugin-vue-define-options/macros-global"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "packages/**/*.vue",
+    "packages/**/*.ts",
+    "packages/**/*.tsx"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

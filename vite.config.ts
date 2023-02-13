@@ -6,6 +6,7 @@ import DefineOptions from 'unplugin-vue-define-options/dist/vite';
 import svgLoader from 'vite-svg-loader';
 import gzipPlugin from 'rollup-plugin-gzip';
 import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import path from 'path';
 
 // https://vitejs.dev/config/
@@ -43,5 +44,6 @@ export default defineConfig({
     svgLoader(),
     gzipPlugin(),
     DefineOptions(),
+    vueJsx(),
   ],
 });
