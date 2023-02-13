@@ -26,6 +26,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
+    "./*.d.ts",
     "packages/**/*.vue",
     "packages/**/*.ts",
     "packages/**/*.tsx"
