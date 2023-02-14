@@ -19,7 +19,7 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["element-plus/global", "unplugin-vue-define-options/macros-global"]
+    "types": ["vite/client", "element-plus/global", "unplugin-vue-define-options/macros-global"]
   },
   "include": [
     "src/**/*.ts",
