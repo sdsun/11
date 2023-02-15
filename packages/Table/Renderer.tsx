@@ -13,6 +13,6 @@ export default defineComponent({
   name: 'Renderer',
   props,
   setup(props) {
-    return () => <>{props!.render(props.params)}</>;
+    return () => <>{props.render && props!.render(props.params)}</>;
   },
 });

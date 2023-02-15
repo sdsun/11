@@ -38,7 +38,7 @@ const tableData = [
   },
   {
     date: '2016-05-01',
-    name: 'Tom',
+    name: 'Tomasdklajskldjaklsjdklasjdklqwoieua alsd jalsjd lkjqweiouqwe asdiquwoeizx我是谁',
     address: 'Test 111',
   },
 ];
@@ -57,8 +57,16 @@ setTimeout(() => {
 </script>
 <template>
   <div>
-    <GTable border :loading="loading" :data="tableData" :columns="columns" :pagination="pagination" />
+    <GTable
+      border
+      showOverflowTooltip
+      headerAlign="left"
+      :loading="loading"
+      :data="tableData"
+      :columns="columns"
+      :pagination="pagination"
+    />
   </div>
 </template>
 
-<style scoped></style>
+<!-- <style scoped></style> -->

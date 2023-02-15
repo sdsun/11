@@ -1,14 +1,5 @@
 <script setup lang="ts">
 import Refresh from './assets/refresh.svg?component';
-import { ref, reactive } from 'vue';
-interface TestObj<T, P> {
-  a: T;
-  b: P;
-}
-const obj: TestObj<string, number> = {
-  a: '1',
-  b: 2,
-};
 </script>
 
 <template>
