@@ -1,6 +1,7 @@
 import 'element-plus/es/components/table/style/css';
 import 'element-plus/es/components/pagination/style/css';
 import 'element-plus/es/components/loading/style/css';
+import '../css/index.css';
 import {
   unref,
   toRefs,
@@ -72,7 +73,7 @@ export default defineComponent({
         width: 60,
         headerRenderer(params: any) {
           return countable ? (
-            <div class="gtable-search">
+            <div class="g-table-search">
               <a href="javascript:void(0)">
                 <i onClick={handleSearch} class="iconfont icon-search"></i>
               </a>
@@ -217,7 +218,7 @@ export default defineComponent({
             header: (scope: any) => {
               return (
                 <div>
-                  <p>{args.label}</p>
+                  <div>{args.label}</div>
                   {searchColumnEle(index, scope)}
                 </div>
               );
@@ -232,7 +233,12 @@ export default defineComponent({
       if (children?.length > 0) {
         scopedSlots = children.map(renderColumns);
       }
-
+      const initHeaderCellClass = (index: number) => {
+        if (index === 0 && countable) {
+          return column.labelClassName || '';
+        }
+        return `g-table-header__top${column.labelClassName ? ' ' + column.labelClassName : ''}`;
+      };
       return (
         <ElTableColumn
           key={index}
@@ -240,6 +246,7 @@ export default defineComponent({
           prop={typeof prop === 'function' && prop(index) ? prop(index) : prop}
           align={column?.align ? column.align : unref(alignWhole)}
           headerAlign={column?.headerAlign ? column.headerAlign : unref(headerAlign)}
+          labelClassName={initHeaderCellClass(index)}
           showOverflowTooltip={column?.showOverflowTooltip ? column.showOverflowTooltip : unref(showOverflowTooltip)}
         >
           {scopedSlots}
@@ -257,7 +264,7 @@ export default defineComponent({
     let renderTable = () => {
       return (
         <>
-          <ElTable {...props} {...attrs} ref={`TableRef${props.key}`}>
+          <ElTable class="g-table" {...props} {...attrs} ref={`TableRef${props.key}`}>
             {{
               default: () => unref(columns).map(renderColumns),
               append: () => slots.append && slots.append(),

@@ -1,0 +1,12 @@
+.g-table-header__top {
+  vertical-align: top !important;
+}
+
+.icon-reset {
+  font-size: 14px;
+}
+
+.g-table-search {
+  display: flex;
+  justify-content: space-between;
+}
