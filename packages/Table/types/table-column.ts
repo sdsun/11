@@ -1,5 +1,6 @@
 import type { TableColumnCtx } from 'element-plus';
 import { GTableProps, Align } from './index';
+import type { OptionKeys } from 'packages/Select/types';
 import type { VNode } from 'vue';
 
 export type TableColumnSortOrders = 'ascending' | 'descending' | null;
@@ -19,6 +20,8 @@ export type TableColumnFilterPlacement =
   | 'right-start'
   | 'right-end'
   | 'right';
+
+export type SearchableType = false | 'input' | 'select';
 
 type FilterMethods = (value: any, row: any, column: TableColumnCtx<any>) => void;
 
@@ -98,6 +101,14 @@ export interface TableColumn {
   filterMethod?: FilterMethods;
   /** 选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性 */
   filteredValue?: Array<any>;
+  /** 新增 是否为搜索模式，会在列上显示input/select */
+  searchType?: SearchableType;
+  /** 新增 当searchType为select时需要传入 */
+  searchOpts?: Array<any>;
+  /** 新增 对应GSelect组件optionKeys */
+  searchOptKeys?: OptionKeys;
+  // 私有方法，记录valueIdx索引
+  readonly __valueIdx?: number;
 }
 
 /**

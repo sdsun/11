@@ -58,5 +58,9 @@ export default {
     type: Boolean,
     default: false,
   },
+  countable: {
+    type: Boolean,
+    default: false,
+  },
   ...defaultProps,
 };

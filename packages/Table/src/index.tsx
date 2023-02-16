@@ -13,13 +13,14 @@ import {
 } from 'vue';
 import props from './props';
 import Renderer from '../renderer';
-import { ElPagination, ElTable, ElTableColumn } from 'element-plus';
+import { GSelect } from 'packages/Select';
+import { ElPagination, ElTable, ElTableColumn, ElInput } from 'element-plus';
 import { GTableProps } from '../types';
 
 export default defineComponent({
   name: 'GTable',
   props,
-  emits: ['page-size-change', 'page-current-change', 'pageCurrentChange', 'pageSizeChange'],
+  emits: ['page-size-change', 'page-current-change', 'pageCurrentChange', 'pageSizeChange', 'search', 'reset'],
   setup(props, { slots, attrs, emit, expose }) {
     const instance = getCurrentInstance()!;
 
@@ -41,11 +42,52 @@ export default defineComponent({
         );
       });
     });
-
-    const { columns, loading, loadingConfig, alignWhole, headerAlign, showOverflowTooltip, pagination } = toRefs(
-      props,
-    ) as unknown as GTableProps;
-
+    const { countable, columns, loading, loadingConfig, alignWhole, headerAlign, showOverflowTooltip, pagination } =
+      toRefs(props) as unknown as GTableProps;
+    // columns列表中searchType不为false的数量
+    const valueList = ref(new Array(unref(columns).filter((item) => item.searchType).length).fill(''));
+    // 增加内部用于计数的方法__valueIdx
+    const addInnerApi = (): void => {
+      let count = 0;
+      unref(columns).forEach((item: any) => {
+        if (item.searchType) {
+          item.__valueIdx = count;
+          count++;
+        }
+      });
+      count = 0;
+    };
+    addInnerApi();
+    const handleSearch = () => {
+      emit('search', unref(valueList));
+    };
+    const handleReset = () => {
+      for (let i = 0; i < valueList.value.length; i++) {
+        valueList.value[i] = '';
+      }
+      emit('reset');
+    };
+    unref(countable) &&
+      unref(columns).unshift({
+        width: 60,
+        headerRenderer(params: any) {
+          return countable ? (
+            <div class="gtable-search">
+              <a href="javascript:void(0)">
+                <i onClick={handleSearch} class="iconfont icon-search"></i>
+              </a>
+              <a href="javascript:void(0)">
+                <i onClick={handleReset} class="iconfont icon-reset"></i>
+              </a>
+            </div>
+          ) : (
+            <div></div>
+          );
+        },
+        cellRenderer({ index }) {
+          return <div>{index + 1}</div>;
+        },
+      });
     let convertLoadingConfig = computed(() => {
       if (!loadingConfig || !unref(loadingConfig)) return;
       let { text, spinner, svg, viewBox } = unref(loadingConfig);
@@ -94,8 +136,40 @@ export default defineComponent({
 
     let conditions = pagination && unref(pagination) && unref(pagination).currentPage && unref(pagination).pageSize;
 
-    const renderColumns = (columns: Record<string, any>, index: number) => {
-      const { cellRenderer, slot, headerRenderer, hide, children, prop, ...args } = columns;
+    const renderColumns = (column: Record<string, any>, index: number) => {
+      // 新增searchType
+      const {
+        cellRenderer,
+        slot,
+        headerRenderer,
+        hide,
+        children,
+        prop,
+        searchType,
+        searchOpts,
+        searchOptKeys,
+        ...args
+      } = column;
+      const searchColumnEle = (index: number, scope: any) => {
+        let valueIdx = unref(columns)[index].__valueIdx as number;
+        switch (searchType) {
+          case 'input':
+            return <ElInput clearable v-model={valueList.value[valueIdx]} size="small"></ElInput>;
+          case 'select':
+            return (
+              <GSelect
+                clearable
+                v-model={valueList.value[valueIdx]}
+                options={searchOpts}
+                option-keys={searchOptKeys}
+                size="small"
+                style="width: 100%"
+              ></GSelect>
+            );
+          default:
+            return;
+        }
+      };
 
       const defaultSlots = {
         default: (scope: any) => {
@@ -138,7 +212,18 @@ export default defineComponent({
             },
             ...defaultSlots,
           }
-        : defaultSlots;
+        : {
+            // 新增
+            header: (scope: any) => {
+              return (
+                <div>
+                  <p>{args.label}</p>
+                  {searchColumnEle(index, scope)}
+                </div>
+              );
+            },
+            ...defaultSlots,
+          };
 
       if (hide && hide(attrs)) {
         return hide(attrs);
@@ -153,9 +238,9 @@ export default defineComponent({
           key={index}
           {...args}
           prop={typeof prop === 'function' && prop(index) ? prop(index) : prop}
-          align={columns?.align ? columns.align : unref(alignWhole)}
-          headerAlign={columns?.headerAlign ? columns.headerAlign : unref(headerAlign)}
-          showOverflowTooltip={columns?.showOverflowTooltip ? columns.showOverflowTooltip : unref(showOverflowTooltip)}
+          align={column?.align ? column.align : unref(alignWhole)}
+          headerAlign={column?.headerAlign ? column.headerAlign : unref(headerAlign)}
+          showOverflowTooltip={column?.showOverflowTooltip ? column.showOverflowTooltip : unref(showOverflowTooltip)}
         >
           {scopedSlots}
         </ElTableColumn>

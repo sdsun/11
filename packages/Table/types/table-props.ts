@@ -127,4 +127,6 @@ export interface GTableProps extends TableProps {
   pagination?: PaginationProps;
   /** 是否使用小型分页样式，默认值：`false` (这里暴露出来主要是满足一些特殊场景，一般情况下可直接在 `pagination` 中设置) */
   paginationSmall?: boolean;
+  /** 新增 是否显示计数列 */
+  countable?: boolean;
 }
