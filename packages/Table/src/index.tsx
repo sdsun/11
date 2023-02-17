@@ -151,7 +151,7 @@ export default defineComponent({
         searchOptKeys,
         ...args
       } = column;
-      const searchColumnEle = (index: number, scope: any) => {
+      const renderSearchColumn = (index: number, scope: any) => {
         let valueIdx = unref(columns)[index].__valueIdx as number;
         switch (searchType) {
           case 'input':
@@ -219,7 +219,7 @@ export default defineComponent({
               return (
                 <div>
                   <div>{args.label}</div>
-                  {searchColumnEle(index, scope)}
+                  {renderSearchColumn(index, scope)}
                 </div>
               );
             },
