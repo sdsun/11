@@ -62,5 +62,9 @@ export default {
     type: Boolean,
     default: false,
   },
+  fullscreen: {
+    type: Boolean,
+    default: false,
+  },
   ...defaultProps,
 };

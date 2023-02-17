@@ -129,4 +129,6 @@ export interface GTableProps extends TableProps {
   paginationSmall?: boolean;
   /** 新增 是否显示计数列 */
   countable?: boolean;
+  /** 新增 是否支持全屏 */
+  fullscreen?: boolean;
 }

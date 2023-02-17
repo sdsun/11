@@ -17,6 +17,7 @@ import Renderer from '../renderer';
 import { GSelect } from 'packages/Select';
 import { ElPagination, ElTable, ElTableColumn, ElInput } from 'element-plus';
 import { GTableProps } from '../types';
+import { useFullScreen } from './fullscreen';
 
 export default defineComponent({
   name: 'GTable',
@@ -43,8 +44,17 @@ export default defineComponent({
         );
       });
     });
-    const { countable, columns, loading, loadingConfig, alignWhole, headerAlign, showOverflowTooltip, pagination } =
-      toRefs(props) as unknown as GTableProps;
+    const {
+      fullscreen,
+      countable,
+      columns,
+      loading,
+      loadingConfig,
+      alignWhole,
+      headerAlign,
+      showOverflowTooltip,
+      pagination,
+    } = toRefs(props) as unknown as GTableProps;
     // columns列表中searchType不为false的数量
     const valueList = ref(new Array(unref(columns).filter((item) => item.searchType).length).fill(''));
     // 增加内部用于计数的方法__valueIdx
@@ -292,9 +302,17 @@ export default defineComponent({
         </>
       );
     };
-
+    const renderFullScreen = useFullScreen(instance, props, fullscreen);
     return () => (
-      <div style="width:100%" v-loading={unref(loading)} {...unref(loadingBackground)} {...unref(convertLoadingConfig)}>
+      <div
+        ref={`g-table-container__${props.key}`}
+        class="g-table-container"
+        style="width:100%"
+        v-loading={unref(loading)}
+        {...unref(loadingBackground)}
+        {...unref(convertLoadingConfig)}
+      >
+        {renderFullScreen()}
         {renderTable()}
       </div>
     );

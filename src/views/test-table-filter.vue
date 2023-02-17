@@ -71,6 +71,7 @@ const handleSearch = ([name, address]: Array<any>) => {
 <template>
   <div>
     <GTable
+      fullscreen
       border
       countable
       showOverflowTooltip
