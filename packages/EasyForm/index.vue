@@ -65,7 +65,7 @@
     <el-form-item>
       <slot name="buttons" :model="model" :formRef="formRef">
         <el-button type="primary" @click="onSubmit(formRef)">{{ formPropsData.submitButtonText }}</el-button>
-        <el-button v-if="formPropsData.showResetButton" type="info" @click="resetForm(formRef)">
+        <el-button v-if="formPropsData.showResetButton" type="default" @click="resetForm(formRef)">
           {{ formPropsData.resetButtonText }}
         </el-button>
         <el-button v-if="formPropsData.showCancelButton" @click="emit('cancel')">
@@ -77,6 +77,7 @@
 </template>
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus';
+import { cloneDeep } from 'lodash';
 import { ComputedRef, ref, computed } from 'vue';
 import * as EasyFormType from './type';
 defineOptions({
@@ -86,6 +87,7 @@ interface Props {
   fieldList: EasyFormType.FieldItem[];
   model?: Record<string, any>;
   options?: EasyFormType.FieldOptions;
+  independent?: boolean;
 }
 const props = defineProps<Props>();
 
@@ -119,7 +121,10 @@ props.fieldList.forEach((item: EasyFormType.FieldItem) => {
   // 如果类型为checkbox，默认值需要设置一个空数组
   const value = item.type === 'checkbox' ? [] : '';
   const dataName = item.name;
-  props.model ? (model.value = props.model) : (model.value[dataName] = item.value || value);
+  const { independent } = props;
+  props.model
+    ? (model.value = independent ? cloneDeep(props.model) : props.model)
+    : (model.value[dataName] = item.value || value);
 });
 // 提交按钮
 const onSubmit = (formEl: FormInstance | undefined) => {

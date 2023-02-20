@@ -1,18 +1,20 @@
 <template>
   <div>
-    <GEasyForm :model="modelData" :fieldList="fieldList" :options="formOptions" @submit="submitHandler"></GEasyForm>
+    <GEasyForm independent :model="modelData" :fieldList="fieldList" :options="formOptions" @submit="submitHandler"></GEasyForm>
     <pre>{{ modelData }}</pre>
   </div>
 </template>
 
 <script setup lang="ts">
 import { FormProps } from 'element-plus';
-import { FieldItem } from 'packages/EasyForm/type';
+import { FieldItem, FieldOptions } from 'packages/EasyForm/type';
 import GEasyForm from '../../packages/EasyForm/index.vue';
 
-const formOptions: Partial<FormProps> = {
+const formOptions: Partial<FieldOptions> = {
   labelWidth: 120,
   statusIcon: true,
+  showResetButton: true,
+  showCancelButton: true,
   rules: {
     name: [{ required: true, message: '情输入' }],
   },
