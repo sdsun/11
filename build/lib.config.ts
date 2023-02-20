@@ -3,6 +3,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import DefineOptions from 'unplugin-vue-define-options/dist/vite';
 import path from 'path';
 import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 
@@ -12,6 +13,10 @@ export default defineConfig({
       {
         find: '@',
         replacement: path.resolve(__dirname, './src'),
+      },
+      {
+        find: 'packages',
+        replacement: path.resolve('.', 'packages'),
       },
     ],
   },
@@ -42,6 +47,15 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    AutoImport({
+      imports: ['vue', 'vue-router'],
+      eslintrc: {
+        enabled: true,
+        filepath: './.eslintrc-auto-import.json',
+        globalsPropValue: true,
+      },
+    }),
     DefineOptions(),
+    vueJsx(),
   ],
 });
