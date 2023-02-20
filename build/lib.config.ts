@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   resolve: {
@@ -41,21 +42,34 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+    DefineOptions(),
+    vueJsx(),
     AutoImport({
       imports: ['vue', 'vue-router'],
+      resolvers: [ElementPlusResolver()],
       eslintrc: {
         enabled: true,
         filepath: './.eslintrc-auto-import.json',
         globalsPropValue: true,
       },
     }),
-    DefineOptions(),
-    vueJsx(),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
+    dts({
+      libFolderPath: '../packages',
+      outputDir: 'dist/types',
+      cleanVueFileName: true,
+      include: ['packages/**/*.vue', 'packages/**/*.ts', 'packages/**/*.tsx'],
+      beforeWriteFile(filePath, content) {
+        // 将入口声明文件位置提升至dist目录下
+        if (/dist\\types\\index.d.ts/g.test(filePath)) {
+          return {
+            filePath: path.resolve('.', './dist/gtmui.d.ts'),
+            content: content.replace(/.\//g, './types/'),
+          };
+        }
+      },
+    }),
   ],
 });
