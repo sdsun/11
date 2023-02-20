@@ -56,6 +56,15 @@
           @keyup.enter="handleKeyUp(item.enterable)"
         />
       </el-form-item>
+      <!-- 传入的组件 -->
+      <el-form-item v-else-if="item.type === 'custom'" v-bind="item.formItemProps">
+        <component
+          :is="item.component"
+          v-model="model[item.name]"
+          v-bind="item.customProps"
+          @keyup.enter="handleKeyUp(item.enterable)"
+        />
+      </el-form-item>
       <!-- 默认输入框 -->
       <el-form-item v-else v-bind="item.formItemProps">
         <el-input v-model="model[item.name]" v-bind="item.inputItemProps" @keyup.enter="handleKeyUp(item.enterable)" />

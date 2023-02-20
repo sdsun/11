@@ -11,6 +11,7 @@ import { DateTableProps } from 'element-plus/es/components/calendar/src/date-tab
 import { IDatePickerType } from 'element-plus/es/components/date-picker/src/date-picker.type';
 export declare type ItemType =
   | 'password'
+  | 'custom'
   | 'text'
   | 'textarea'
   | 'radio'
@@ -37,8 +38,13 @@ export interface FieldItem {
   name: string; // aaaa
   /** 数据的值 */
   value?: any;
+
   /** el-form-item 属性 */
   formItemProps: Partial<FormItemProps>;
+
+  component?: any;
+  customProps?: any;
+  
   /** 渲染的标签属性 */
   inputItemProps?: any;
   /** el-checkbox-group与el-radio-group属性和el-select */

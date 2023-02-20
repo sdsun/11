@@ -1,14 +1,19 @@
 <template>
   <div>
-    <GEasyForm independent :model="modelData" :fieldList="fieldList" :options="formOptions" @submit="submitHandler"></GEasyForm>
+    <!-- independent -->
+    <GEasyForm :model="modelData" :fieldList="fieldList" :options="formOptions" @submit="submitHandler"></GEasyForm>
     <pre>{{ modelData }}</pre>
   </div>
 </template>
 
-<script setup lang="ts">
-import { FormProps } from 'element-plus';
+<script setup lang="tsx">
 import { FieldItem, FieldOptions } from 'packages/EasyForm/type';
-import GEasyForm from '../../packages/EasyForm/index.vue';
+import GEasyForm from 'packages/EasyForm/index.vue';
+import { defineProps } from 'vue';
+
+const CustomComponent = (props: any) => {
+  return <props.tag>{props.msg}</props.tag>;
+};
 
 const formOptions: Partial<FieldOptions> = {
   labelWidth: 120,
@@ -21,6 +26,19 @@ const formOptions: Partial<FieldOptions> = {
 };
 
 const fieldList = ref<FieldItem[]>([
+  {
+    type: 'custom',
+    name: 'custom',
+    component: markRaw(CustomComponent),
+    customProps: {
+      tag: 'h1',
+      msg: 'this is custom component msg',
+    },
+    formItemProps: {
+      label: 'custom',
+      prop: 'custom',
+    },
+  },
   {
     name: 'name',
     formItemProps: {
@@ -119,9 +137,9 @@ const modelData = ref({
 });
 
 function submitHandler(data: any) {
-  if(!data) {
+  if (!data) {
     // 校验不合格
-    return
+    return;
   }
   console.log('submitHandler :>> ', data);
 }
