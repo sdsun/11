@@ -7,9 +7,8 @@
 </template>
 
 <script setup lang="tsx">
-import { FieldItem, FieldOptions } from 'packages/EasyForm/type';
+import { FieldItem, FieldList, FieldOptions } from 'packages/EasyForm/type';
 import GEasyForm from 'packages/EasyForm/index.vue';
-import { defineProps } from 'vue';
 
 const CustomComponent = (props: any) => {
   return <props.tag>{props.msg}</props.tag>;
@@ -25,7 +24,7 @@ const formOptions: Partial<FieldOptions> = {
   },
 };
 
-const fieldList = ref<FieldItem[]>([
+const fieldList = ref<FieldList>([
   {
     type: 'custom',
     name: 'custom',
@@ -44,6 +43,7 @@ const fieldList = ref<FieldItem[]>([
     formItemProps: {
       label: 'Activity name',
       prop: 'name',
+      style: { width: '600px' },
     },
   },
   {
@@ -52,6 +52,11 @@ const fieldList = ref<FieldItem[]>([
     formItemProps: {
       label: 'age',
       prop: 'age',
+      style: { width: '500px' },
+    },
+    inputItemProps: {
+      // step: 1,
+      // precision: 1
     },
   },
   {
@@ -72,6 +77,7 @@ const fieldList = ref<FieldItem[]>([
     formItemProps: {
       label: 'Activity date',
       prop: 'date1',
+      style: { width: '300px' },
     },
   },
   {
@@ -80,6 +86,7 @@ const fieldList = ref<FieldItem[]>([
     formItemProps: {
       label: 'Activity time2',
       prop: 'date2',
+      style: { width: '300px' },
     },
   },
   {

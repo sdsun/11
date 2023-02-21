@@ -93,7 +93,7 @@ defineOptions({
   name: 'GEasyForm',
 });
 interface Props {
-  fieldList: EasyFormType.FieldItem[];
+  fieldList: EasyFormType.FieldList;
   model?: Record<string, any>;
   options?: EasyFormType.FieldOptions;
   independent?: boolean;

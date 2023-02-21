@@ -6,9 +6,11 @@ import {
   CheckboxProps,
   RadioProps,
   ElSelect,
+  switchProps,
+  datePickTypes,
+  TimePickerDefaultProps,
 } from 'element-plus';
-import { DateTableProps } from 'element-plus/es/components/calendar/src/date-table';
-import { IDatePickerType } from 'element-plus/es/components/date-picker/src/date-picker.type';
+import { ComponentPublicInstance } from 'vue';
 export declare type ItemType =
   | 'password'
   | 'custom'
@@ -30,6 +32,14 @@ export interface FieldOptions extends Partial<FormProps> {
   resetButtonText?: string;
   cancelButtonText?: string;
 }
+export interface FieldFormItemProps extends Partial<FormItemProps> {
+  style?: any;
+}
+// export type AllInputItemProps<T> = Partial<Record<keyof T, any>>;
+// type selectProps = typeof ElSelect['__defaults']
+// export type InputItemProps = Partial<InputProps | InputNumberProps | switchProps | TimePickerDefaultProps>;
+// export type InputItemProps = Partial<Record<keyof InputProps, any>>;
+// export type InputItemProps = Partial<InputProps>;
 
 export interface FieldItem {
   /** 渲染的标签类型 */
@@ -40,13 +50,14 @@ export interface FieldItem {
   value?: any;
 
   /** el-form-item 属性 */
-  formItemProps: Partial<FormItemProps>;
+  formItemProps: FieldFormItemProps;
 
   component?: any;
   customProps?: any;
-  
+
   /** 渲染的标签属性 */
   inputItemProps?: any;
+  // inputItemProps?: InputItemProps;
   /** el-checkbox-group与el-radio-group属性和el-select */
   groupProps?: any;
   /** el-checkbox el-radio el-option 属性 */
@@ -58,6 +69,7 @@ export interface FieldItem {
   // showPassword?: boolean; // 是否显示切换密码图标
   // options?: IFieldOptions;
 }
+export type FieldList = FieldItem[];
 // export interface IFieldOptions {
 //   type?: IDatePickerType;
 //   labelkey?: string;
