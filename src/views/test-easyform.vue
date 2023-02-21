@@ -32,6 +32,7 @@ const fieldList = ref<FieldList>([
     customProps: {
       tag: 'h1',
       msg: 'this is custom component msg',
+      onClick: () => console.log('customProps :>> ', Math.random()),
     },
     formItemProps: {
       label: 'custom',
@@ -62,6 +63,11 @@ const fieldList = ref<FieldList>([
   {
     type: 'select',
     name: 'region',
+    inputItemProps: {
+      onChange(value: any) {
+        console.log('select change :>> ', value);
+      }
+    },
     formItemProps: {
       label: 'Activity zone',
       prop: 'region',
