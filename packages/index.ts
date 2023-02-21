@@ -1,3 +1,4 @@
+import '@/assets/iconfont/iconfont.css';
 export * from './Button';
 export * from './Tag';
 export * from './Table';
