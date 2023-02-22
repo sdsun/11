@@ -71,7 +71,7 @@ const formRules = reactive<FormRules>({
   desc: [{ required: true, message: 'Please input activity form', trigger: 'blur' }],
 });
 const formOptions: Partial<FieldOptions> = {
-  labelWidth: 120,
+  labelWidth: 130,
   statusIcon: true,
   showResetButton: true,
   showCancelButton: true,
@@ -89,14 +89,28 @@ const fieldList = ref<FieldList>([
       onClick: () => console.log('customProps :>> ', Math.random()),
     },
     formItemProps: {
-      label: 'custom',
+      label: 'custom this is custom test while the label is too langer',
       prop: 'custom',
+    },
+  },
+  {
+    type: 'custom',
+    name: 'custom2',
+    component: markRaw(CustomComponent),
+    customProps: {
+      tag: 'h1',
+      msg: '----->自定义组件渲染区域<-----',
+      onClick: () => console.log('customProps :>> ', Math.random()),
+    },
+    formItemProps: {
+      label: '自定义组件自定义组件自定义组件自定义组件',
+      prop: 'custom2',
     },
   },
   {
     name: 'name',
     formItemProps: {
-      label: 'Activity name',
+      label: 'Activity name Activity name',
       prop: 'name',
       style: { width: '600px' },
     },

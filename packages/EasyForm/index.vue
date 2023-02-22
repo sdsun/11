@@ -1,5 +1,5 @@
 <template>
-  <el-form v-bind="formPropsData" ref="formRef" :model="model" @submit.prevent>
+  <el-form v-bind="formPropsData" ref="formRef" label-suffix=":" :model="model" @submit.prevent>
     <template v-for="(item, index) in fieldList" :key="index">
       <!-- 单选框 -->
       <el-form-item v-if="item.type === 'radio'" v-bind="item.formItemProps">
@@ -51,7 +51,7 @@
       <el-form-item v-else-if="item.type === 'number'" v-bind="item.formItemProps">
         <el-input-number
           v-model="model[item.name]"
-          :controls="false"
+          controls-position="right"
           v-bind="item.inputItemProps"
           @keyup.enter="handleKeyUp(item.enterable)"
         />
@@ -73,8 +73,8 @@
 
     <el-form-item>
       <slot name="buttons" :model="model" :formRef="formRef">
-        <el-button type="primary" @click="onSubmit(formRef)">{{ formPropsData.submitButtonText }}</el-button>
-        <el-button v-if="formPropsData.showResetButton" type="default" @click="resetForm(formRef)">
+        <el-button type="primary" @click="onSubmit">{{ formPropsData.submitButtonText }}</el-button>
+        <el-button v-if="formPropsData.showResetButton" type="default" @click="resetForm">
           {{ formPropsData.resetButtonText }}
         </el-button>
         <el-button v-if="formPropsData.showCancelButton" @click="emit('cancel')">
@@ -122,9 +122,6 @@ const formPropsData: ComputedRef<EasyFormType.FieldOptions> = computed(() => {
   return Object.assign(option, props?.options);
 });
 
-defineExpose({
-  formRef,
-});
 // 根据fieldList初始化model， 如果model有传值就用传递的model数据模型，否则就给上面声明的model设置相应的(key,value) [item.prop]， item.value是表单的默认值（选填）
 props.fieldList.forEach((item: EasyFormType.FieldItem) => {
   // 如果类型为checkbox，默认值需要设置一个空数组
@@ -136,32 +133,46 @@ props.fieldList.forEach((item: EasyFormType.FieldItem) => {
     : (model.value[dataName] = item.value || value);
 });
 // 提交按钮
-const onSubmit = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.validate((valid) => {
+function onSubmit() {
+  if (!formRef.value) return;
+  formRef.value.validate((valid) => {
     if (valid) {
       emit('submit', model.value);
     } else {
       return false;
     }
   });
-};
+}
 // 输入框回车事件
-const handleKeyUp = (enterable: boolean | undefined) => {
+function handleKeyUp(enterable: boolean | undefined) {
   if (!enterable) return;
-  onSubmit(formRef.value);
-};
+  onSubmit();
+}
 // 重置
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.resetFields();
-};
+function resetForm() {
+  if (!formRef.value) return;
+  formRef.value.resetFields();
+}
+
+defineExpose({
+  formRef,
+  onSubmit,
+  resetForm,
+});
 </script>
 <style scoped lang="scss">
 .el-select {
   width: 100%;
 }
 :deep() {
+  .el-form-item__label {
+    height: auto;
+    min-height: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    line-height: 16px;
+    text-align: right;
+  }
   .el-date-editor {
     flex: 1;
     display: inline-flex;
