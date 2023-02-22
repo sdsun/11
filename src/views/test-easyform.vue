@@ -9,19 +9,73 @@
 <script setup lang="tsx">
 import { FieldItem, FieldList, FieldOptions } from 'packages/EasyForm/type';
 import GEasyForm from 'packages/EasyForm/index.vue';
+import { FormRules } from 'element-plus';
 
 const CustomComponent = (props: any) => {
   return <props.tag>{props.msg}</props.tag>;
 };
-
+const formRules = reactive<FormRules>({
+  name: [
+    { required: true, message: 'Please input Activity name', trigger: 'blur' },
+    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
+  ],
+  age: [
+    {
+      validator(rule: any, value: any, callback: any) {
+        console.log('object :>> ', { value, type: typeof value });
+        callback();
+      },
+      trigger: 'blur',
+    },
+    { required: true, message: 'Please input Activity age', trigger: 'blur' },
+    { type: 'number', min: 18, max: 55, message: 'age should be 18 to 55', trigger: 'blur' },
+  ],
+  region: [
+    {
+      required: true,
+      message: 'Please select Activity zone',
+      trigger: 'change',
+    },
+  ],
+  date1: [
+    {
+      type: 'date',
+      required: true,
+      message: 'Please pick a date',
+      trigger: 'change',
+    },
+  ],
+  date2: [
+    {
+      type: 'date',
+      required: true,
+      message: 'Please pick a time',
+      trigger: 'change',
+    },
+  ],
+  type: [
+    {
+      type: 'array',
+      required: true,
+      message: 'Please select at least one activity type',
+      trigger: 'change',
+    },
+  ],
+  resource: [
+    {
+      required: true,
+      message: 'Please select activity resource',
+      trigger: 'change',
+    },
+  ],
+  desc: [{ required: true, message: 'Please input activity form', trigger: 'blur' }],
+});
 const formOptions: Partial<FieldOptions> = {
   labelWidth: 120,
   statusIcon: true,
   showResetButton: true,
   showCancelButton: true,
-  rules: {
-    name: [{ required: true, message: '情输入' }],
-  },
+  rules: formRules,
 };
 
 const fieldList = ref<FieldList>([
@@ -66,7 +120,7 @@ const fieldList = ref<FieldList>([
     inputItemProps: {
       onChange(value: any) {
         console.log('select change :>> ', value);
-      }
+      },
     },
     formItemProps: {
       label: 'Activity zone',
