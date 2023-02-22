@@ -275,7 +275,13 @@ export default defineComponent({
     let renderTable = () => {
       return (
         <>
-          <ElTable class="g-table" {...props} {...attrs} ref={`TableRef${props.key}`}>
+          <ElTable
+            class="g-table"
+            {...props}
+            {...attrs}
+            headerRowClassName={`g-table-header${props.headerRowClassName ? ' ' + props.headerRowClassName : ''}`}
+            ref={`TableRef${props.key}`}
+          >
             {{
               default: () => unref(columns).map(renderColumns),
               append: () => slots.append && slots.append(),
