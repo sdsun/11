@@ -6,6 +6,10 @@ const options = reactive([
     label: 'test',
     result: 1,
   },
+  {
+    label: 'test2',
+    result: 2,
+  },
 ]);
 const columns: any = [
   {
@@ -18,14 +22,16 @@ const columns: any = [
   {
     label: 'Name',
     prop: 'name',
-    searchType: 'select',
-    searchOpts: options,
-    searchOptKeys: ['label', 'result'],
+    filterType: 'select',
+    filterOpts: options,
+    filterOptKeys: ['label', 'result'],
   },
   {
     label: 'Address',
     prop: 'address',
-    searchType: 'input',
+    filterType: 'checkbox',
+    filterOpts: options,
+    filterOptKeys: ['label', 'result'],
   },
 ];
 

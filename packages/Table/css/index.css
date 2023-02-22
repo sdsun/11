@@ -8,11 +8,14 @@
 .g-table-header__top {
   vertical-align: top !important;
 }
+.g-table-header__item {
+  display: flex;
+  align-items: center;
+}
 
 .icon-reset {
   font-size: 14px;
 }
-
 .g-table-search {
   display: flex;
   justify-content: space-between;
@@ -23,4 +26,29 @@
 .g-table-fullscreen .icon-fullscreen,
 .g-table-fullscreen .icon-fullscreen-exit {
   font-size: 20px;
+}
+.g-table-filter__fill {
+  color: var(--el-menu-active-color);
+}
+.g-table-popper .is-active {
+  background: var(--el-menu-hover-bg-color);
+  color: var(--el-menu-hover-text-color);
+}
+
+.g-table-popper .g-table-popper__btn {
+  min-width: 100px;
+  padding: 0 10px 10px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.g-table-popper .el-divider--horizontal {
+  margin: 5px 0;
+}
+.g-table-popper .g-table-popper__checkbox {
+  padding: 0 10px;
+}
+.g-table-popper .g-table-popper__disabled {
+  cursor: not-allowed;
+  color: #ccc;
 }

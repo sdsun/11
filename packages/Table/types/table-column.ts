@@ -21,7 +21,7 @@ export type TableColumnFilterPlacement =
   | 'right-end'
   | 'right';
 
-export type SearchableType = false | 'input' | 'select';
+export type FilterableType = false | 'checkbox' | 'select' | 'date';
 
 type FilterMethods = (value: any, row: any, column: TableColumnCtx<any>) => void;
 
@@ -102,11 +102,11 @@ export interface TableColumn {
   /** 选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性 */
   filteredValue?: Array<any>;
   /** 新增 是否为搜索模式，会在列上显示input/select */
-  searchType?: SearchableType;
-  /** 新增 当searchType为select时需要传入 */
-  searchOpts?: Array<any>;
+  filterType?: FilterableType;
+  /** 新增 当filterType为select时需要传入 */
+  filterOpts?: Array<any>;
   /** 新增 对应GSelect组件optionKeys */
-  searchOptKeys?: OptionKeys;
+  filterOptKeys?: OptionKeys;
   // 私有方法，记录valueIdx索引
   readonly __valueIdx?: number;
 }
