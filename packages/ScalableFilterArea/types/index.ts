@@ -1,23 +1,27 @@
-export type FilterType = 'text' | 'select' | 'date' | 'time';
-export type FilterDateType = 'week' | 'month' | 'year' | 'date';
-// export type FilterDateTypeFormat = {
-//   week: '';
-// };
+import { DATE_VALUE_FORMAT } from '../src/scalableFilterArea';
+
+export type FilterType = 'text' | 'select' | 'virtual-select' | 'date' | 'cascader';
+export type FilterDateType = keyof typeof DATE_VALUE_FORMAT;
+
+export interface SelectOption {
+  label: string;
+  value: string | number;
+}
+
+export interface CascaderOption extends Record<string, unknown> {
+  label: string;
+  value: string | number;
+  children?: Array<CascaderOption>;
+}
 
 export interface FilterItemOptions {
   attributeName: string;
   placeholder?: string;
   dateType?: FilterDateType;
   remoteMethod?: () => Array<Object>;
+  selectOptions?: Array<SelectOption>;
+  cascaderOptions?: Array<CascaderOption>;
 }
-
-// export interface FilterItemSelect extends FilterItemOptions {
-//   remoteMethod: () => Array<Object>;
-// }
-
-// export interface FilterItemDate extends FilterItemOptions {
-//   dateType: FilterDateType;
-// }
 
 export interface FilterItem {
   type: FilterType;
@@ -26,7 +30,6 @@ export interface FilterItem {
 }
 
 export type ScalableFilters = Array<FilterItem>;
-
 export interface FilterModelValue {
-  [key: string]: string | number;
+  [key: string]: any;
 }
