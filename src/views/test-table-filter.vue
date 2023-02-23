@@ -25,6 +25,13 @@ const columns: any = [
     filterType: 'select',
     filterOpts: options,
     filterOptKeys: ['label', 'result'],
+    onFilter(value: any) {
+      if (value) {
+        tableData.value = tableData.value.filter((item: any) => {
+          return item.name.indexOf(value.label) > -1;
+        });
+      }
+    },
   },
   {
     label: 'Address',
@@ -32,13 +39,16 @@ const columns: any = [
     filterType: 'checkbox',
     filterOpts: options,
     filterOptKeys: ['label', 'result'],
+    onFilter(value: any) {
+      console.log(value);
+    },
   },
 ];
 
-const tableData = [
+const tableData = ref([
   {
     date: '2016-05-03',
-    name: 'Tom',
+    name: 'test',
     address: 'Test 111',
   },
   {
@@ -56,14 +66,14 @@ const tableData = [
     name: 'Tomasdklajskldjaklsjdklasjdklqwoieua alsd jalsjd lkjqweiouqwe asdiquwoeizx我是谁',
     address: 'Test 111',
   },
-];
+]);
 
 let loading = ref(true);
 const pagination = reactive({
   pageSize: 5,
   currentPage: 1,
   background: true,
-  total: tableData.length,
+  total: tableData.value.length,
 });
 
 setTimeout(() => {
@@ -73,13 +83,25 @@ setTimeout(() => {
 const handleSearch = ([name, address]: Array<any>) => {
   console.log(name, address);
 };
+
+let table = ref(null);
+let value = ref('');
+const resetTable = () => {
+  const ele = table.value as any;
+  ele.resetFilter();
+};
 </script>
 <template>
   <div>
+    <!-- <ElDatePicker v-model="value" type="daterange"> </ElDatePicker> -->
+    <ElButton @click="resetTable">Reset Filter</ElButton>
     <GTable
+      ref="table"
       fullscreen
       border
       countable
+      copyable
+      checkable
       showOverflowTooltip
       headerAlign="left"
       :loading="loading"

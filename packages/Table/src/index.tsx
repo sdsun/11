@@ -6,6 +6,8 @@ import 'element-plus/es/components/dropdown-item/style/css';
 import 'element-plus/es/components/divider/style/css';
 import 'element-plus/es/components/checkbox-group/style/css';
 import 'element-plus/es/components/checkbox/style/css';
+import 'element-plus/es/components/message/style/css';
+import 'element-plus/es/components/tooltip/style/css';
 import '../css/index.css';
 import {
   ref,
@@ -18,19 +20,20 @@ import {
   getCurrentInstance,
   type CSSProperties,
 } from 'vue';
+import copy from 'copy-to-clipboard';
 import props from './props';
 import Renderer from '../renderer';
-import { GSelect } from 'packages/Select';
 import {
   ElPagination,
   ElTable,
   ElTableColumn,
-  ElInput,
+  ElMessage,
   ElDropdown,
   ElDropdownItem,
   ElDivider,
   ElCheckboxGroup,
   ElCheckbox,
+  ElTooltip,
 } from 'element-plus';
 import { GTableProps } from '../types';
 import { useFullScreen } from './fullscreen';
@@ -70,9 +73,38 @@ export default defineComponent({
       headerAlign,
       showOverflowTooltip,
       pagination,
+      copyable,
+      checkable,
     } = toRefs(props) as unknown as GTableProps;
     // columns列表中filterType不为false的数量
     const valueList = reactive(new Array(unref(columns).filter((item) => item.filterType).length).fill(''));
+    const resetFilter = () => {
+      valueList.forEach((value, index) => {
+        console.log('value', value instanceof Array);
+        if (value instanceof Array) {
+          value.splice(0);
+        } else {
+          valueList.splice(index, 1, undefined);
+        }
+      });
+    };
+    if (unref(countable)) {
+      unref(columns).unshift({
+        width: 60,
+        headerRenderer(params: any) {
+          return countable ? <div class="g-table-search">No.</div> : <div></div>;
+        },
+        cellRenderer({ index }) {
+          return <div>{index + 1}</div>;
+        },
+      });
+    }
+    if (unref(checkable)) {
+      unref(columns).unshift({
+        type: 'selection',
+        width: 55,
+      });
+    }
     // 增加内部用于计数的方法__valueIdx
     const addInnerApi = (): void => {
       let count = 0;
@@ -88,37 +120,7 @@ export default defineComponent({
       count = 0;
     };
     addInnerApi();
-    const handleSearch = () => {
-      emit('search', unref(valueList));
-    };
-    const handleReset = () => {
-      for (let i = 0; i < valueList.length; i++) {
-        valueList[i] = '';
-      }
-      emit('reset');
-    };
-    unref(countable) &&
-      unref(columns).unshift({
-        width: 60,
-        headerRenderer(params: any) {
-          return countable ? (
-            <div class="g-table-search">
-              {/* <a href="javascript:void(0)">
-                <i onClick={handleSearch} class="iconfont icon-search"></i>
-              </a>
-              <a href="javascript:void(0)">
-                <i onClick={handleReset} class="iconfont icon-reset"></i>
-              </a> */}
-              No.
-            </div>
-          ) : (
-            <div></div>
-          );
-        },
-        cellRenderer({ index }) {
-          return <div>{index + 1}</div>;
-        },
-      });
+
     let convertLoadingConfig = computed(() => {
       if (!loadingConfig || !unref(loadingConfig)) return;
       let { text, spinner, svg, viewBox } = unref(loadingConfig);
@@ -179,6 +181,7 @@ export default defineComponent({
         filterType,
         filterOpts,
         filterOptKeys,
+        onFilter,
         ...args
       } = column;
       const renderFilterColumn = (index: number, scope: any) => {
@@ -212,6 +215,7 @@ export default defineComponent({
         };
         const handleDropdown = (cmd: any) => {
           valueList[valueIdx] = cmd;
+          onFilter && onFilter(valueList[valueIdx]);
         };
         const handleResetFilter = () => {
           if (filterType === 'checkbox') {
@@ -219,11 +223,13 @@ export default defineComponent({
           } else {
             valueList[valueIdx] = undefined;
           }
+          onFilter && onFilter(valueList[valueIdx]);
         };
         const handleConfirm = () => {
           if (confirmDisabled) {
             return;
           }
+          onFilter && onFilter(valueList[valueIdx]);
         };
         const renderConfirmBtn = () => {
           if (filterType === 'checkbox') {
@@ -239,13 +245,17 @@ export default defineComponent({
           }
         };
         const renderFilterIcon = () => {
-          if (filterType === 'checkbox') {
-            return `iconfont icon-filter${valueList[valueIdx].length ? '-fill g-table-filter__fill' : ''}`;
-          } else {
-            return `iconfont icon-filter${valueList[valueIdx] ? '-fill g-table-filter__fill' : ''}`;
+          switch (filterType) {
+            case 'checkbox':
+              return `iconfont icon-filter${valueList[valueIdx].length ? '-fill g-table-filter__fill' : ''}`;
+            default:
+              return `iconfont icon-filter${valueList[valueIdx] ? '-fill g-table-filter__fill' : ''}`;
           }
         };
         return (
+          // <ElTooltip content="test" appendTo=".g-table-container">
+          //   i
+          // </ElTooltip>
           <ElDropdown popper-class="g-table-popper" trigger="click" onCommand={handleDropdown}>
             {{
               default: () => <i class="iconfont" className={renderFilterIcon()}></i>,
@@ -358,17 +368,27 @@ export default defineComponent({
       getTableRef,
       /** @description Get Table Doms */
       getTableDoms,
+      /** @description Reset table columns filter value */
+      resetFilter,
     });
 
     let renderTable = () => {
+      const dbClickCopy = (row: any, column: any, cell: any) => {
+        if (!unref(copyable)) return;
+        copy(row[column.property]);
+        ElMessage({
+          message: 'Cell Copied!',
+        });
+      };
       return (
         <>
           <ElTable
-            class="g-table"
+            class={unref(copyable) ? 'g-table g-table-copyable' : 'g-table'}
             {...props}
             {...attrs}
             headerRowClassName={`g-table-header${props.headerRowClassName ? ' ' + props.headerRowClassName : ''}`}
             ref={`TableRef${props.key}`}
+            onCellDblclick={dbClickCopy}
           >
             {{
               default: () => unref(columns).map(renderColumns),

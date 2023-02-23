@@ -107,6 +107,8 @@ export interface TableColumn {
   filterOpts?: Array<any>;
   /** 新增 对应GSelect组件optionKeys */
   filterOptKeys?: OptionKeys;
+  /** 新增 onFilter方法，当前列筛选内容更新时触发 注：此筛选为服务端筛选，不会在组件内部缓存数据 */
+  onFilter?: any;
   // 私有方法，记录valueIdx索引
   readonly __valueIdx?: number;
 }

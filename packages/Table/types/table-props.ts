@@ -131,4 +131,8 @@ export interface GTableProps extends TableProps {
   countable?: boolean;
   /** 新增 是否支持全屏 */
   fullscreen?: boolean;
+  /** 新增 是否支持双击复制单元格 */
+  copyable?: boolean;
+  /** 新增 是否支持多选 */
+  checkable?: boolean;
 }

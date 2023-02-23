@@ -52,3 +52,7 @@
   cursor: not-allowed;
   color: #ccc;
 }
+
+.g-table-copyable .el-table__cell {
+  user-select: none;
+}
