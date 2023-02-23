@@ -21,6 +21,7 @@ const filterItems = ref<ScalableFilters>([
     label: 'test2',
     options: {
       attributeName: 'test2',
+      placeholder:'placeholder',
     },
   },
   {
