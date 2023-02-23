@@ -8,7 +8,8 @@
 
 <script setup lang="tsx">
 import { FieldItem, FieldList, FieldOptions } from 'packages/EasyForm/type';
-import GEasyForm from 'packages/EasyForm/index.vue';
+// import GEasyForm from 'packages/EasyForm/index.vue';
+import GEasyForm from 'packages/EasyForm';
 import { FormRules } from 'element-plus';
 
 const CustomComponent = (props: any) => {
@@ -47,7 +48,6 @@ const formRules = reactive<FormRules>({
   ],
   date2: [
     {
-      type: 'date',
       required: true,
       message: 'Please pick a time',
       trigger: 'change',
@@ -71,13 +71,14 @@ const formRules = reactive<FormRules>({
   desc: [{ required: true, message: 'Please input activity form', trigger: 'blur' }],
 });
 const formOptions: Partial<FieldOptions> = {
+  // inline: true,
   labelWidth: 130,
   statusIcon: true,
   showResetButton: true,
   showCancelButton: true,
+  // formItemWidth: '400px',
   rules: formRules,
 };
-
 const fieldList = ref<FieldList>([
   {
     type: 'custom',
@@ -109,6 +110,7 @@ const fieldList = ref<FieldList>([
   },
   {
     name: 'name',
+    tooltip: 'this is name tooltip',
     formItemProps: {
       label: 'Activity name Activity name',
       prop: 'name',
@@ -118,6 +120,7 @@ const fieldList = ref<FieldList>([
   {
     type: 'number',
     name: 'age',
+    enterable: true,
     formItemProps: {
       label: 'age',
       prop: 'age',
@@ -183,8 +186,8 @@ const fieldList = ref<FieldList>([
       valueKey: 'label',
     },
     groupDatas: [
-      { label: 'Online activities', name: 'type' },
-      { label: 'Promotion activities', name: 'type' },
+      { label: 'Online activities', name: 'type', tooltip: 'hahhahahhahahahahahah' },
+      { label: 'Promotion activities', name: 'type', tooltip: 'hahhahahhahahahahahah' },
       { label: 'Offline activities', name: 'type' },
       { label: 'Simple brand exposure', name: 'type' },
     ],
@@ -204,6 +207,17 @@ const fieldList = ref<FieldList>([
       { label: 'Sponsorship', name: 'resource' },
       { label: 'Venue', name: 'resource' },
     ],
+  },
+  {
+    name: 'remark',
+    tooltip: '在这里我们提供 9 种不同方向的展示方式，可以通过以下完整示例来理解，选择你要的效果。',
+    formItemProps: {
+      label: 'Remark',
+    },
+    inputItemProps: {
+      type: 'textarea',
+      autosize: { minRows: 2, maxRows: 4 },
+    },
   },
 ]);
 

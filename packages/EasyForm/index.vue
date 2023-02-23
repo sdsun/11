@@ -1,32 +1,44 @@
 <template>
-  <el-form v-bind="formPropsData" ref="formRef" label-suffix=":" :model="model" @submit.prevent>
+  <el-form v-bind="formPropsData" ref="formRef" class="g-easy-form" label-suffix=":" :model="model" @submit.prevent>
     <template v-for="(item, index) in fieldList" :key="index">
-      <!-- 单选框 -->
-      <el-form-item v-if="item.type === 'radio'" v-bind="item.formItemProps">
-        <el-radio-group v-model="model[item.name]" v-bind="item.groupProps">
-          <el-radio
-            v-for="radioItem in item.groupDatas"
-            :key="radioItem[item.groupItemProps?.valueKey || 'value']"
-            :label="radioItem[item.groupItemProps?.valueKey || 'value']"
-          >
-            {{ radioItem[item.groupItemProps?.labelkey || 'label'] }}
-          </el-radio>
+      <el-form-item
+        :style="{ width: formPropsData.formItemWidth }"
+        :class="{ 'has-tooltip': !!item.tooltip }"
+        v-bind="item.formItemProps"
+      >
+        <!-- 单选框组件 -->
+        <el-radio-group v-if="item.type === 'radio'" v-model="model[item.name]" v-bind="item.groupProps">
+          <template v-for="radioItem in item.groupDatas" :key="radioItem[item.groupItemProps?.valueKey || 'value']">
+            <el-radio :label="radioItem[item.groupItemProps?.valueKey || 'value']">
+              {{ radioItem[item.groupItemProps?.labelkey || 'label'] }}
+              <template v-if="radioItem.tooltip">
+                <el-tooltip class="box-item" effect="dark" :content="radioItem.tooltip" placement="bottom">
+                  <span class="tooltip">i</span>
+                </el-tooltip>
+              </template>
+            </el-radio>
+          </template>
         </el-radio-group>
-      </el-form-item>
-      <!-- 复选框 -->
-      <el-form-item v-else-if="item.type === 'checkbox'" v-bind="item.formItemProps">
-        <el-checkbox-group v-model="model[item.name]" v-bind="item.groupProps">
-          <el-checkbox
+
+        <!-- 多选框组件 -->
+        <el-checkbox-group v-else-if="item.type === 'checkbox'" v-model="model[item.name]" v-bind="item.groupProps">
+          <template
             v-for="checkboxItem in item.groupDatas"
             :key="checkboxItem[item.groupItemProps?.valueKey || 'value']"
-            :label="checkboxItem[item.groupItemProps?.valueKey || 'value']"
-            >{{ checkboxItem[item.groupItemProps?.labelkey || 'label'] }}</el-checkbox
           >
+            <el-checkbox :label="checkboxItem[item.groupItemProps?.valueKey || 'value']">
+              {{ checkboxItem[item.groupItemProps?.labelkey || 'label'] }}
+              <template v-if="checkboxItem.tooltip">
+                <el-tooltip class="box-item" effect="dark" :content="checkboxItem.tooltip" placement="bottom">
+                  <span class="tooltip">i</span>
+                </el-tooltip>
+              </template>
+            </el-checkbox>
+          </template>
         </el-checkbox-group>
-      </el-form-item>
-      <!-- 下拉框 -->
-      <el-form-item v-else-if="item.type === 'select'" v-bind="item.formItemProps">
-        <el-select v-model="model[item.name]" v-bind="item.inputItemProps">
+
+        <!-- 下拉选择组件 -->
+        <el-select v-else-if="item.type === 'select'" v-model="model[item.name]" v-bind="item.inputItemProps">
           <el-option
             v-for="selectItem in item.groupDatas"
             :key="selectItem[item.groupItemProps?.valueKey || 'value']"
@@ -34,40 +46,51 @@
             :value="selectItem[item.groupItemProps?.valueKey || 'value']"
           />
         </el-select>
-      </el-form-item>
-      <!-- 开关 -->
-      <el-form-item v-else-if="item.type === 'switch'" v-bind="item.formItemProps">
-        <el-switch v-model="model[item.name]" v-bind="item.inputItemProps" />
-      </el-form-item>
-      <!-- 日期选择 -->
-      <el-form-item v-else-if="item.type === 'date'" v-bind="item.formItemProps">
-        <el-date-picker v-model="model[item.name]" value-format="YYYY-MM-DD" v-bind="item.inputItemProps" />
-      </el-form-item>
-      <!-- 时间选择 -->
-      <el-form-item v-else-if="item.type === 'time'" v-bind="item.formItemProps">
-        <el-time-picker v-model="model[item.name]" value-format="HH:mm" v-bind="item.inputItemProps" />
-      </el-form-item>
-      <!-- 數字输入框 -->
-      <el-form-item v-else-if="item.type === 'number'" v-bind="item.formItemProps">
+        <!-- 开关 -->
+        <el-switch v-else-if="item.type === 'switch'" v-model="model[item.name]" v-bind="item.inputItemProps" />
+        <!-- 日期选择 -->
+        <el-date-picker
+          v-else-if="item.type === 'date'"
+          v-model="model[item.name]"
+          value-format="YYYY-MM-DD"
+          v-bind="item.inputItemProps"
+        />
+        <!-- 时间选择 -->
+        <el-time-picker
+          v-else-if="item.type === 'time'"
+          v-model="model[item.name]"
+          value-format="HH:mm"
+          v-bind="item.inputItemProps"
+        />
+        <!-- 數字输入框 -->
         <el-input-number
+          v-else-if="item.type === 'number'"
           v-model="model[item.name]"
           controls-position="right"
           v-bind="item.inputItemProps"
           @keyup.enter="handleKeyUp(item.enterable)"
         />
-      </el-form-item>
-      <!-- 传入的组件 -->
-      <el-form-item v-else-if="item.type === 'custom'" v-bind="item.formItemProps">
+        <!-- 传入的组件 -->
         <component
           :is="item.component"
+          v-else-if="item.type === 'custom'"
           v-model="model[item.name]"
           v-bind="item.customProps"
           @keyup.enter="handleKeyUp(item.enterable)"
         />
-      </el-form-item>
-      <!-- 默认输入框 -->
-      <el-form-item v-else v-bind="item.formItemProps">
-        <el-input v-model="model[item.name]" v-bind="item.inputItemProps" @keyup.enter="handleKeyUp(item.enterable)" />
+        <!-- 默认输入框 -->
+        <el-input
+          v-else
+          v-model="model[item.name]"
+          v-bind="item.inputItemProps"
+          @keyup.enter="handleKeyUp(item.enterable)"
+        />
+
+        <template v-if="item.tooltip">
+          <el-tooltip class="box-item" effect="dark" :content="item.tooltip" placement="bottom" :hide-after="9999999">
+            <span class="tooltip">i</span>
+          </el-tooltip>
+        </template>
       </el-form-item>
     </template>
 
@@ -160,32 +183,6 @@ defineExpose({
   resetForm,
 });
 </script>
-<style scoped lang="scss">
-.el-select {
-  width: 100%;
-}
-:deep() {
-  .el-form-item__label {
-    height: auto;
-    min-height: 32px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    line-height: 16px;
-    text-align: right;
-  }
-  .el-date-editor {
-    flex: 1;
-    display: inline-flex;
-  }
-  .el-input-number {
-    width: 100%;
-    .el-input__wrapper {
-      padding-left: 11px;
-      padding-right: 11px;
-    }
-    .el-input__inner {
-      text-align: left;
-    }
-  }
-}
+<style lang="scss">
+@import 'index.scss';
 </style>
