@@ -19,10 +19,10 @@ export declare type ItemType =
   | 'radio'
   | 'checkbox'
   | 'select'
-  | 'date'
-  | 'time'
+  | 'date-picker'
+  | 'time-picker'
   | 'switch'
-  | 'number';
+  | 'input-number';
 // 当FiledItem的type === 'radio' | 'checkbox'时，options的参数类型
 
 export interface FieldOptions extends Partial<FormProps> {
@@ -49,7 +49,7 @@ export interface FieldItem {
   name: string; // aaaa
   /** 数据的值 */
   value?: any;
-  
+
   tooltip?: any;
 
   /** el-form-item 属性 */

@@ -79,12 +79,6 @@ const easyForm = defineComponent({
         }
       });
     }
-    // 输入框回车事件
-    function handleKeyUp(e: KeyboardEvent, enterable: boolean | undefined) {
-      if (e.keyCode !== 13) return;
-      if (!enterable) return;
-      onSubmit();
-    }
     // 重置
     function resetForm() {
       if (!formRef.value) return;
@@ -120,7 +114,6 @@ const easyForm = defineComponent({
         customProps,
         component,
         tooltip,
-        enterable,
       } = inputItem;
       let defaultElComponent: any = null;
       const inputItemTooltip = (tooltip: string) =>
@@ -165,34 +158,12 @@ const easyForm = defineComponent({
             );
           }
           break;
-        case 'time':
-        case 'date':
-          {
-            const currentEl = resolveComponent(`el-${type}-picker`);
-            defaultElComponent = (
-              <currentEl
-                v-model={model.value[name]}
-                value-format={type === 'time' ? 'HH:mm' : 'YYYY-MM-DD'}
-                {...inputItemProps}
-              ></currentEl>
-            );
-          }
-          break;
         case 'custom':
           defaultElComponent = h(component, { ...customProps });
           break;
-        case 'number':
-          {
-            const currentEl = resolveComponent('el-input-number');
-            defaultElComponent = (
-              <currentEl v-model={model.value[name]} controls-position="right" {...inputItemProps}></currentEl>
-            );
-          }
-          break;
         default: {
           if (!defaultElComponent) {
-            const currentEl = resolveComponent(`el-${type}`);
-            defaultElComponent = <currentEl v-model={model.value[name]} {...inputItemProps}></currentEl>;
+            defaultElComponent = resolveComponent(`el-${type}`);
           }
         }
       }
@@ -200,7 +171,10 @@ const easyForm = defineComponent({
         <>
           {
             <defaultElComponent
-              onKeyup={($event: KeyboardEvent) => handleKeyUp($event, enterable)}
+              v-model={model.value[name]}
+              value-format={type === 'time-picker' ? 'HH:mm' : 'YYYY-MM-DD'}
+              controls-position="right"
+              {...inputItemProps}
             ></defaultElComponent>
           }
           {inputItemTooltip(tooltip)}

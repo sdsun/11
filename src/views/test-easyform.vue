@@ -118,9 +118,8 @@ const fieldList = ref<FieldList>([
     },
   },
   {
-    type: 'number',
+    type: 'input-number',
     name: 'age',
-    enterable: true,
     formItemProps: {
       label: 'age',
       prop: 'age',
@@ -149,7 +148,7 @@ const fieldList = ref<FieldList>([
     ],
   },
   {
-    type: 'date',
+    type: 'date-picker',
     name: 'date1',
     formItemProps: {
       label: 'Activity date',
@@ -158,7 +157,7 @@ const fieldList = ref<FieldList>([
     },
   },
   {
-    type: 'time',
+    type: 'time-picker',
     name: 'date2',
     formItemProps: {
       label: 'Activity time2',
