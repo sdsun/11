@@ -1,19 +1,7 @@
+@import './form-tooltip.scss';
 .g-easy-form {
   .el-select {
     width: 100%;
-  }
-  .tooltip {
-    flex-shrink: 0;
-    width: 14px;
-    height: 14px;
-    color: #fff;
-    border-radius: 100%;
-    display: inline-flex;
-    margin-left: 5px;
-    font-size: 12px;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.65);
   }
   .has-tooltip {
     .el-form-item__content {

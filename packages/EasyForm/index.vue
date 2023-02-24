@@ -13,7 +13,7 @@
               {{ radioItem[item.groupItemProps?.labelkey || 'label'] }}
               <template v-if="radioItem.tooltip">
                 <el-tooltip class="box-item" effect="dark" :content="radioItem.tooltip" placement="bottom">
-                  <span class="tooltip">i</span>
+                  <span class="g-form-tooltip">i</span>
                 </el-tooltip>
               </template>
             </el-radio>
@@ -30,7 +30,7 @@
               {{ checkboxItem[item.groupItemProps?.labelkey || 'label'] }}
               <template v-if="checkboxItem.tooltip">
                 <el-tooltip class="box-item" effect="dark" :content="checkboxItem.tooltip" placement="bottom">
-                  <span class="tooltip">i</span>
+                  <span class="g-form-tooltip">i</span>
                 </el-tooltip>
               </template>
             </el-checkbox>
@@ -88,7 +88,7 @@
 
         <template v-if="item.tooltip">
           <el-tooltip class="box-item" effect="dark" :content="item.tooltip" placement="bottom" :hide-after="9999999">
-            <span class="tooltip">i</span>
+            <span class="g-form-tooltip">i</span>
           </el-tooltip>
         </template>
       </el-form-item>

@@ -119,7 +119,7 @@ const easyForm = defineComponent({
       const inputItemTooltip = (tooltip: string) =>
         !!tooltip && (
           <el-tooltip effect="dark" placement="bottom" content={tooltip}>
-            <span class="tooltip">i</span>
+            <span class="g-form-tooltip">i</span>
           </el-tooltip>
         );
       switch (type) {
