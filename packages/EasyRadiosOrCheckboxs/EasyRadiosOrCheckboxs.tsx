@@ -48,7 +48,7 @@ const easyRadiosOrCheckboxs = defineComponent({
       return props.lists.map((item: any) => {
         return (
           <>
-            <groupItem label={renderText(item, 'value')}>
+            <groupItem label={renderText(item, 'value')} disabled={item.disabled}>
               {renderText(item, 'label')}
               {props.tooltip && renderToolTip(item)}
             </groupItem>

@@ -12,7 +12,7 @@
     <h1>radioValue2 == {{ radioValue2 }}</h1>
     <hr />
     <h1>g-easy-checkboxs</h1>
-    <g-easy-checkboxs v-model="radioValue4" :lists="radiosLists"></g-easy-checkboxs>
+    <g-easy-checkboxs v-model="radioValue4" disabled :lists="radiosLists"></g-easy-checkboxs>
     <g-easy-checkboxs v-model="radioValue5" :lists="radiosLists" tooltip="value"></g-easy-checkboxs>
     <hr />
     <GEasyRadiosCheckboxs v-model="radioValue3" :lists="radiosLists"></GEasyRadiosCheckboxs>
@@ -29,7 +29,7 @@
 import GEasyRadios from 'packages/EasyRadios';
 import GEasyCheckboxs from 'packages/EasyCheckboxs';
 import GEasyRadiosCheckboxs from 'packages/EasyRadiosOrCheckboxs';
-const radiosLists = [
+const radiosLists = ref<any[]>([
   {
     label: 'Option A',
     value: 'A',
@@ -42,7 +42,11 @@ const radiosLists = [
     label: 'Option B',
     value: 'C',
   },
-];
+]);
+
+setTimeout(() => {
+  radiosLists.value[0].disabled = true;
+}, 2000);
 
 const radioValue1 = ref('A');
 const radioValue2 = ref('B');
