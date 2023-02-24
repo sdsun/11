@@ -50,21 +50,21 @@
         <el-switch v-else-if="item.type === 'switch'" v-model="model[item.name]" v-bind="item.inputItemProps" />
         <!-- 日期选择 -->
         <el-date-picker
-          v-else-if="item.type === 'date'"
+          v-else-if="item.type === 'date-picker'"
           v-model="model[item.name]"
           value-format="YYYY-MM-DD"
           v-bind="item.inputItemProps"
         />
         <!-- 时间选择 -->
         <el-time-picker
-          v-else-if="item.type === 'time'"
+          v-else-if="item.type === 'time-picker'"
           v-model="model[item.name]"
           value-format="HH:mm"
           v-bind="item.inputItemProps"
         />
         <!-- 數字输入框 -->
         <el-input-number
-          v-else-if="item.type === 'number'"
+          v-else-if="item.type === 'input-number'"
           v-model="model[item.name]"
           controls-position="right"
           v-bind="item.inputItemProps"
