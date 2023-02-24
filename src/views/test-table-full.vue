@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full">
     <GTable
       ref="table"
       fullscreen
@@ -198,6 +198,17 @@ const columns: any = ref([
       }
     },
   },
+  {
+    label: 'Action',
+    width: 100,
+    cellRenderer(props: any) {
+      return h('div', { class: 'action-btn' }, [
+        h('i', { class: 'iconfont icon-ellipsis' }),
+        h('i', { class: 'iconfont icon-setting' }),
+        h('i', { class: 'iconfont icon-search' }),
+      ]);
+    },
+  },
 ]);
 const resetTableData = () => {
   loading.value = true;
@@ -233,25 +244,34 @@ setTimeout(() => {
 }, 1500);
 </script>
 
-<style lang="scss">
-.status-container {
-  display: flex;
-  align-items: center;
-  .status-container__circle {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 5px;
+<style lang="scss" scoped>
+.full {
+  ::v-deep .action-btn {
+    display: flex;
+    justify-content: space-between;
+    .iconfont {
+      color: var(--el-color-primary);
+    }
   }
-  .circle-active {
-    background: #1be993;
-  }
-  .circle-error {
-    background: rgb(247, 55, 55);
-  }
-  .status-container__font {
-    font-size: 12px;
-    color: #545252;
+  ::v-deep .status-container {
+    display: flex;
+    align-items: center;
+    .status-container__circle {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    .circle-active {
+      background: #1be993;
+    }
+    .circle-error {
+      background: rgb(247, 55, 55);
+    }
+    .status-container__font {
+      font-size: 12px;
+      color: #545252;
+    }
   }
 }
 </style>
