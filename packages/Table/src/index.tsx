@@ -325,7 +325,7 @@ export default defineComponent({
             // 新增
             header: (scope: any) => {
               return (
-                <div>
+                <div style="display:inline-block">
                   <div class="g-table-header__item">
                     <span>{args.label}</span>
                     {renderFilterColumn(index, scope)}
