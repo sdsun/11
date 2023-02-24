@@ -184,6 +184,7 @@ export default defineComponent({
         ...args
       } = column;
       const renderFilterColumn = (index: number, scope: any) => {
+        if (!filterType) return;
         let valueIdx = unref(columns)[index].__valueIdx as number;
         // dropdown列表的Confirm是否可点击
         const confirmDisabled = filterType === 'checkbox' && valueList[valueIdx] && valueList[valueIdx].length === 0;
@@ -276,26 +277,6 @@ export default defineComponent({
           <ElTooltip popper-class="g-table-popper" effect="light" content="test" appendTo=".g-table-container">
             {tooltipSlot}
           </ElTooltip>
-          // <ElDropdown popper-class="g-table-popper" trigger="click" onCommand={handleDropdown}>
-          //   {{
-          //     default: () => <i class="iconfont" className={renderFilterIcon()}></i>,
-          //     dropdown: () =>
-          //       filterOpts && filterOpts.length > 0 ? (
-          //         <>
-          //           {renderDropdownItem()}
-          //           <ElDivider />
-          //           <div class="g-table-popper__btn">
-          //             {renderConfirmBtn()}
-          //             <a href="javascript:void(0)" onClick={handleResetFilter}>
-          //               Reset
-          //             </a>
-          //           </div>
-          //         </>
-          //       ) : (
-          //         <div>No Data</div>
-          //       ),
-          //   }}
-          // </ElDropdown>
         );
       };
 
