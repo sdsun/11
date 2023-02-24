@@ -14,7 +14,7 @@
       :data="tableData"
       :columns="columns"
       :pagination="pagination"
-      @search="handleSearch"
+      @page-size-change="handlePageSizeChange"
     />
   </div>
 </template>
@@ -23,16 +23,6 @@
 import { GTable } from 'packages';
 import { GTableSetting } from 'packages/TableSetting';
 
-const options = reactive([
-  {
-    label: 'test',
-    result: 1,
-  },
-  {
-    label: 'test2',
-    result: 2,
-  },
-]);
 const sourceData = ref<Array<any>>([]); // 源数据缓存
 const tableData = ref<Array<any>>([]);
 const countryData = ref<Array<any>>([
@@ -109,11 +99,11 @@ const columns: any = ref([
       if (value) {
         loading.value = true;
         setTimeout(() => {
-          tableData.value = sourceData.value
-            .filter((item: any) => {
-              return item.country.indexOf(value.label) > -1;
-            })
-            .slice(0, pagination.pageSize);
+          const result = sourceData.value.filter((item: any) => {
+            return item.country.indexOf(value.label) > -1;
+          });
+          pagination.total = result.length;
+          tableData.value = result.slice(0, pagination.pageSize);
           loading.value = false;
         }, 500);
       } else {
@@ -128,10 +118,16 @@ const columns: any = ref([
     width: 400,
     filterType: 'checkbox',
     filterOpts: sideData,
-    filterOptKeys: ['label', 'value'],
+    filterOptKeys: ['label', 'label'],
     onFilter(value: any) {
-      if (value) {
-        console.log(value);
+      if (value.length > 0) {
+        loading.value = true;
+        setTimeout(() => {
+          const result = sourceData.value.filter((item) => value.indexOf(item.address) > -1);
+          pagination.total = result.length;
+          tableData.value = result.slice(0, pagination.pageSize);
+          loading.value = false;
+        }, 500);
       } else {
         // reset
         resetTableData();
@@ -140,6 +136,7 @@ const columns: any = ref([
   },
 ]);
 const resetTableData = () => {
+  pagination.total = sourceData.value.length;
   tableData.value = sourceData.value.slice(0, pagination.pageSize);
 };
 
@@ -151,12 +148,12 @@ const pagination = reactive({
   total: sourceData.value.length,
 });
 
+const handlePageSizeChange = (size: number) => {
+  tableData.value = sourceData.value.slice(0, size);
+};
+
 setTimeout(() => {
   loading.value = false;
   tableData.value = sourceData.value.slice(0, pagination.pageSize);
 }, 1500);
-
-const handleSearch = ([name, address]: Array<any>) => {
-  console.log(name, address);
-};
 </script>
