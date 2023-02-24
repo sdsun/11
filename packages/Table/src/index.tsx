@@ -80,7 +80,6 @@ export default defineComponent({
     const valueList = reactive(new Array(unref(columns).filter((item) => item.filterType).length).fill(''));
     const resetFilter = () => {
       valueList.forEach((value, index) => {
-        console.log('value', value instanceof Array);
         if (value instanceof Array) {
           value.splice(0);
         } else {
