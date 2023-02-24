@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { GTableSetting } from 'packages/TableSetting';
+import { GTableSetting } from 'packages';
 interface TableColumnsItemType {
   label?: string;
   prop?: string;
