@@ -66,5 +66,13 @@ export default {
     type: Boolean,
     default: false,
   },
+  copyable: {
+    type: Boolean,
+    default: false,
+  },
+  checkable: {
+    type: Boolean,
+    default: false,
+  },
   ...defaultProps,
 };
