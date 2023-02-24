@@ -17,7 +17,11 @@ export const useFullScreen = (instance: ComponentInternalInstance | null, props:
     nextTick(() => {
       const tableEle: HTMLElement = instance?.proxy?.$refs[`g-table-container__${props.key}`] as HTMLElement;
       if (screenfull.isEnabled && tableEle) {
-        unref(fullscreenStatus) ? screenfull.exit() : screenfull.request(tableEle);
+        if (unref(fullscreenStatus)) {
+          screenfull.exit();
+        } else {
+          screenfull.request(tableEle, { navigationUI: 'hide' });
+        }
       }
     });
   };
