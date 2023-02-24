@@ -1,0 +1,52 @@
+.g-easy-form {
+  .el-select {
+    width: 100%;
+  }
+  .tooltip {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    color: #fff;
+    border-radius: 100%;
+    display: inline-flex;
+    margin-left: 5px;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.65);
+  }
+  .has-tooltip {
+    .el-form-item__content {
+      flex-wrap: nowrap;
+    }
+  }
+  .el-form-item {
+    &.is-success {
+      .el-input__validateIcon {
+        color: var(--el-color-success);
+      }
+    }
+  }
+  .el-form-item__label {
+    height: auto;
+    min-height: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    line-height: 16px;
+    text-align: right;
+  }
+  .el-date-editor {
+    flex: 1;
+    display: inline-flex;
+  }
+  .el-input-number {
+    width: 100%;
+    .el-input__wrapper {
+      padding-left: 11px;
+      padding-right: 11px;
+    }
+    .el-input__inner {
+      text-align: left;
+    }
+  }
+}
