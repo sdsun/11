@@ -5,10 +5,10 @@ export default {
 };
 </script>
 <template>
-  <div v-show="statusData.status === 1" class="status status1"><slot></slot></div>
-  <div v-show="statusData.status === 2" class="status status2"><slot></slot></div>
-  <div v-show="statusData.status === 3" class="status status3"><slot></slot></div>
-  <div v-show="statusData.status === 4" class="status status4"><slot></slot></div>
+  <div v-show="status === 1" class="status status1"><slot></slot></div>
+  <div v-show="status === 2" class="status status2"><slot></slot></div>
+  <div v-show="status === 3" class="status status3"><slot></slot></div>
+  <div v-show="status === 4" class="status status4"><slot></slot></div>
 </template>
 
 <script setup lang="ts">
@@ -21,13 +21,9 @@ import { onBeforeMount, reactive, toRefs, defineEmits, watch, ref } from 'vue';
 可根据后端字段调整
 */
 const props = defineProps({
-  statusData: {
-    type: Object,
-    default: {},
-  },
   status: {
-    type: String,
-    efault: '',
+    type: Number,
+    default: '',
   },
 });
 </script>
@@ -41,6 +37,7 @@ const props = defineProps({
   text-align: center;
   border-radius: 3px;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 .status1 {
   color: #ff9500;
@@ -56,7 +53,6 @@ const props = defineProps({
   background: #f6ffed;
   border: 1px solid #b7eb8f;
   color: #10a710;
-  
 }
 .status4 {
   background: #fff1f0;
