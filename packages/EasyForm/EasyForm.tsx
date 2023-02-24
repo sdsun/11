@@ -202,7 +202,7 @@ const easyForm = defineComponent({
       return <el-form-item>{slots.buttons?.({ model, formRef }) || defaultButtons}</el-form-item>;
     }
     return () => (
-      <el-form ref={formRef} label-suffix=":" model={model.value} class="g-easy-form" {...formPropsData.value}>
+      <el-form ref={formRef} label-suffix=":" model={model.value} scroll-to-error class="g-easy-form" {...formPropsData.value}>
         {renderFormItem(props.fieldList, formPropsData.value)}
         {renderFormButtons()}
       </el-form>

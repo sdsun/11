@@ -1,5 +1,5 @@
 <template>
-  <el-form v-bind="formPropsData" ref="formRef" class="g-easy-form" label-suffix=":" :model="model" @submit.prevent>
+  <el-form v-bind="formPropsData" ref="formRef" scroll-to-error class="g-easy-form" label-suffix=":" :model="model" @submit.prevent>
     <template v-for="(item, index) in fieldList" :key="index">
       <el-form-item
         :style="{ width: formPropsData.formItemWidth }"
