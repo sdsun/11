@@ -1,7 +1,7 @@
 import { App, Plugin } from 'vue';
 import EasyRadios from './EasyRadio';
 
-const GEasyRadios = Object.assign(EasyRadios, {
+export const GEasyRadios = Object.assign(EasyRadios, {
   install(app: App) {
     app.component(EasyRadios.name, EasyRadios);
   },
@@ -9,4 +9,4 @@ const GEasyRadios = Object.assign(EasyRadios, {
 
 export default GEasyRadios;
 
-export const GEasyFormPlugin = GEasyRadios;
+export const GEasyRadiosPlugin = GEasyRadios;

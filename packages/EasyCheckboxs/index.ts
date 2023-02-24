@@ -1,12 +1,12 @@
 import { App, Plugin } from 'vue';
 import EasyCheckboxs from './EasyCheckboxs';
 
-const GEasyCheckboxs = Object.assign(EasyCheckboxs, {
+export const GEasyCheckboxs = Object.assign(EasyCheckboxs, {
   install(app: App) {
     app.component(EasyCheckboxs.name, EasyCheckboxs);
   },
 });
 
-export default EasyCheckboxs;
+export default GEasyCheckboxs;
 
-export const GEasyFormPlugin = EasyCheckboxs;
+export const GEasyCheckboxsPlugin = GEasyCheckboxs;

@@ -15,20 +15,18 @@
     <g-easy-checkboxs v-model="radioValue4" disabled :lists="radiosLists"></g-easy-checkboxs>
     <g-easy-checkboxs v-model="radioValue5" :lists="radiosLists" tooltip="value"></g-easy-checkboxs>
     <hr />
-    <GEasyRadiosCheckboxs v-model="radioValue3" :lists="radiosLists"></GEasyRadiosCheckboxs>
-    <GEasyRadiosCheckboxs
+    <GEasyRadiosOrCheckboxs v-model="radioValue3" :lists="radiosLists"></GEasyRadiosOrCheckboxs>
+    <GEasyRadiosOrCheckboxs
       v-model="radioValue3"
       :lists="radiosLists"
       tooltip="value"
       :label="(item: any) => item.label + ' - ' + item.value"
-    ></GEasyRadiosCheckboxs>
+    ></GEasyRadiosOrCheckboxs>
   </div>
 </template>
 
 <script setup lang="tsx">
-import GEasyRadios from 'packages/EasyRadios';
-import GEasyCheckboxs from 'packages/EasyCheckboxs';
-import GEasyRadiosCheckboxs from 'packages/EasyRadiosOrCheckboxs';
+import { GEasyRadios, GEasyCheckboxs, GEasyRadiosOrCheckboxs } from 'packages';
 const radiosLists = ref<any[]>([
   {
     label: 'Option A',

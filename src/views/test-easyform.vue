@@ -8,8 +8,7 @@
 
 <script setup lang="tsx">
 import { FieldItem, FieldList, FieldOptions } from 'packages/EasyForm/type';
-// import GEasyForm from 'packages/EasyForm/index.vue';
-import GEasyForm from 'packages/EasyForm';
+import { GEasyForm } from 'packages';
 import { FormRules } from 'element-plus';
 
 const CustomComponent = (props: any) => {
