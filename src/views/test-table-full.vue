@@ -1,6 +1,5 @@
 <template>
   <div>
-    <GTableSetting v-model="columns" />
     <GTable
       ref="table"
       fullscreen
@@ -15,7 +14,11 @@
       :columns="columns"
       :pagination="pagination"
       @page-size-change="handlePageSizeChange"
-    />
+    >
+      <template #tableRight>
+        <GTableSetting v-model="columns" />
+      </template>
+    </GTable>
   </div>
 </template>
 

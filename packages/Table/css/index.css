@@ -68,3 +68,15 @@
 .g-table-copyable .el-table__cell {
   user-select: none;
 }
+
+.g-table-content {
+  display: flex;
+  justify-content: space-between;
+}
+.g-table-content__left,
+.g-table-content__right {
+  display: flex;
+}
+.g-table-content__right {
+  text-align: right;
+}
