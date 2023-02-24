@@ -3,7 +3,7 @@ import GScalableFilterArea from './src/ScalableFilterArea.vue';
 
 export const ScalableFilterAreaPlugin: Plugin = {
   install(app: App) {
-    app.component('ScalableFilterArea', GScalableFilterArea);
+    app.component('GScalableFilterArea', GScalableFilterArea);
   },
 };
 

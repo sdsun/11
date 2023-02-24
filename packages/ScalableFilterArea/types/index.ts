@@ -21,6 +21,7 @@ export interface FilterItemOptions {
   remoteMethod?: () => Array<Object>;
   selectOptions?: Array<SelectOption>;
   cascaderOptions?: Array<CascaderOption>;
+  multiple?: boolean;
 }
 
 export interface FilterItem {

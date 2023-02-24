@@ -44,6 +44,12 @@ import { AutoCreateRoutesWithoutComponent } from '../router/auto-create-routes';
   background-color: #f1f1f1;
 }
 .app-main {
-  background: #f9f9f9;
+  background: rgb(245, 245, 245);
+  font-family: PingFang SC;
+}
+:deep(.el-scrollbar) {
+  .el-scrollbar__view {
+    height: 100%;
+  }
 }
 </style>

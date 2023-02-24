@@ -1,13 +1,25 @@
 <template>
-  <div>
-    <GScalableFilterArea v-model="model" :filter-items="filterItems" />
-    <el-button @click="handleAddItem">Add Item</el-button>
-  </div>
+  <GPanelTable>
+    <template #form> <GScalableFilterArea v-model="model" :filter-items="filterItems" /> </template>
+    <template #operation>
+      <el-button type="primary">New</el-button>
+      <el-button type="primary">Template</el-button>
+    </template>
+    <template #control>
+      <el-icon><FullScreen /></el-icon>
+      <el-icon><Setting /></el-icon>
+    </template>
+    <template #table>
+      <TestTable />
+    </template>
+  </GPanelTable>
 </template>
 
-<script lang="ts" setup>
-import { GScalableFilterArea } from 'packages';
+<script setup lang="ts">
+import { GPanelTable, GScalableFilterArea } from 'packages';
+
 import { ScalableFilters, FilterModelValue } from 'packages/ScalableFilterArea/types';
+import TestTable from './test-table.vue';
 
 const filterItems = ref<ScalableFilters>([
   {
@@ -37,6 +49,23 @@ const filterItems = ref<ScalableFilters>([
           label: 'Option5',
         },
       ],
+      multiple: true,
+    },
+  },
+  {
+    type: 'date',
+    label: 'datetime-range',
+    options: {
+      attributeName: 'test3',
+      dateType: 'datetimerange',
+    },
+  },
+  {
+    type: 'date',
+    label: 'date-range',
+    options: {
+      attributeName: 'test4',
+      dateType: 'daterange',
     },
   },
   {
@@ -86,22 +115,6 @@ const filterItems = ref<ScalableFilters>([
           label: 'Option10',
         },
       ],
-    },
-  },
-  {
-    type: 'date',
-    label: 'datetime-range',
-    options: {
-      attributeName: 'test3',
-      dateType: 'datetimerange',
-    },
-  },
-  {
-    type: 'date',
-    label: 'date-range',
-    options: {
-      attributeName: 'test4',
-      dateType: 'daterange',
     },
   },
   {
@@ -211,7 +224,7 @@ const filterItems = ref<ScalableFilters>([
   },
   {
     type: 'text',
-    label: 'long-long-long-long-long-long-long-long-long-long-long',
+    label: 'long-long-long-long-long-long-long-long',
     options: {
       attributeName: 'test6',
     },
@@ -220,14 +233,4 @@ const filterItems = ref<ScalableFilters>([
 const model = reactive<FilterModelValue>({
   test2: [],
 });
-
-const handleAddItem = () => {
-  filterItems.value.push({
-    type: 'text',
-    label: 'new Item',
-    options: {
-      attributeName: 'newItem',
-    },
-  });
-};
 </script>
