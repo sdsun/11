@@ -8,6 +8,7 @@ import 'element-plus/es/components/checkbox-group/style/css';
 import 'element-plus/es/components/checkbox/style/css';
 import 'element-plus/es/components/message/style/css';
 import 'element-plus/es/components/tooltip/style/css';
+// import 'element-plus/es/components/alert/style/css';
 import '../css/index.css';
 import {
   ref,
@@ -28,12 +29,11 @@ import {
   ElTable,
   ElTableColumn,
   ElMessage,
-  ElDropdown,
-  ElDropdownItem,
   ElDivider,
   ElCheckboxGroup,
   ElCheckbox,
   ElTooltip,
+  // ElAlert,
 } from 'element-plus';
 import { GTableProps } from '../types';
 import { useFullScreen } from './fullscreen';
@@ -193,9 +193,12 @@ export default defineComponent({
             case 'select':
               return unref(filterOpts).map((item: any) => (
                 <>
-                  <ElDropdownItem class={valueList[valueIdx] === item ? 'is-active' : ''} command={item}>
-                    <div>{item[filterOptKeys[0]]}</div>
-                  </ElDropdownItem>
+                  <div
+                    class={valueList[valueIdx] === item ? 'filter-item is-active' : 'filter-item'}
+                    onClick={() => handleDropdown(item)}
+                  >
+                    <span>{item[filterOptKeys[0]]}</span>
+                  </div>
                 </>
               ));
             case 'checkbox':
@@ -252,30 +255,48 @@ export default defineComponent({
               return `iconfont icon-filter${valueList[valueIdx] ? '-fill g-table-filter__fill' : ''}`;
           }
         };
+        const tooltipSlot = {
+          default: () => <i class="iconfont" className={renderFilterIcon()}></i>,
+          content: () =>
+            filterOpts && filterOpts.length > 0 ? (
+              <>
+                {renderDropdownItem()}
+                <ElDivider />
+                <div class="g-table-popper__btn">
+                  {renderConfirmBtn()}
+                  <a href="javascript:void(0)" onClick={handleResetFilter}>
+                    Reset
+                  </a>
+                </div>
+              </>
+            ) : (
+              <div>No Data</div>
+            ),
+        };
         return (
-          // <ElTooltip content="test" appendTo=".g-table-container">
-          //   i
-          // </ElTooltip>
-          <ElDropdown popper-class="g-table-popper" trigger="click" onCommand={handleDropdown}>
-            {{
-              default: () => <i class="iconfont" className={renderFilterIcon()}></i>,
-              dropdown: () =>
-                filterOpts && filterOpts.length > 0 ? (
-                  <>
-                    {renderDropdownItem()}
-                    <ElDivider />
-                    <div class="g-table-popper__btn">
-                      {renderConfirmBtn()}
-                      <a href="javascript:void(0)" onClick={handleResetFilter}>
-                        Reset
-                      </a>
-                    </div>
-                  </>
-                ) : (
-                  <div>No Data</div>
-                ),
-            }}
-          </ElDropdown>
+          <ElTooltip popper-class="g-table-popper" effect="light" content="test" appendTo=".g-table-container">
+            {tooltipSlot}
+          </ElTooltip>
+          // <ElDropdown popper-class="g-table-popper" trigger="click" onCommand={handleDropdown}>
+          //   {{
+          //     default: () => <i class="iconfont" className={renderFilterIcon()}></i>,
+          //     dropdown: () =>
+          //       filterOpts && filterOpts.length > 0 ? (
+          //         <>
+          //           {renderDropdownItem()}
+          //           <ElDivider />
+          //           <div class="g-table-popper__btn">
+          //             {renderConfirmBtn()}
+          //             <a href="javascript:void(0)" onClick={handleResetFilter}>
+          //               Reset
+          //             </a>
+          //           </div>
+          //         </>
+          //       ) : (
+          //         <div>No Data</div>
+          //       ),
+          //   }}
+          // </ElDropdown>
         );
       };
 

@@ -42,6 +42,18 @@
   justify-content: space-between;
   align-items: center;
 }
+.g-table-popper .filter-item {
+  cursor: pointer;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 10px;
+  transition: all 300ms ease;
+  font-size: var(--el-checkbox-font-size);
+}
+.g-table-popper .filter-item:hover {
+  background: var(--el-menu-hover-bg-color);
+  color: var(--el-menu-hover-text-color);
+}
 .g-table-popper .el-divider--horizontal {
   margin: 5px 0;
 }
