@@ -8,3 +8,5 @@ export * from './EasyForm';
 export * from './EasyRadios';
 export * from './EasyCheckboxs';
 export * from './EasyRadiosOrCheckboxs';
+export * from './DrawerPanel';
+export * from './SectionGroup';
