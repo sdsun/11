@@ -14,17 +14,20 @@
       :columns="columns"
       :pagination="pagination"
       @page-size-change="handlePageSizeChange"
+      @page-current-change="handleCurrentChange"
     >
       <template #tableRight>
-        <GTableSetting v-model="columns" />
+        <GTableSetting v-model="columns" :append-to-body="false" />
       </template>
     </GTable>
   </div>
 </template>
 
 <script setup lang="ts">
-import { GTable } from 'packages';
-import { GTableSetting } from 'packages/TableSetting';
+import { h } from 'vue';
+import { GTable, GTableSetting } from 'packages';
+import { GTableStatus } from 'packages/TableStatus';
+import { ElTooltip } from 'element-plus';
 
 const sourceData = ref<Array<any>>([]); // 源数据缓存
 const tableData = ref<Array<any>>([]);
@@ -69,6 +72,8 @@ for (let i = 0; i < 100; i++) {
     code: `HPKTEM20220000${i}`,
     name: `HPK SHOP ${i}`,
     dimension: '500',
+    status: Number(i % 2 === 0),
+    rStatus: Number(Math.floor(Math.random() * 10) % 2 === 0),
     country: countryData.value[i % countryData.value.length].label,
     address: sideData.value[i % sideData.value.length].label,
   });
@@ -87,9 +92,63 @@ const columns: any = ref([
     width: 400,
   },
   {
+    label: 'Not Retail Status',
+    prop: 'rStatus',
+    width: 200,
+    cellRenderer(props: any) {
+      return h(
+        'div',
+        {
+          class: 'status-container',
+        },
+        [
+          h('div', {
+            class: props.row.rStatus
+              ? 'status-container__circle circle-active'
+              : 'status-container__circle circle-error',
+          }),
+          h('div', { class: 'status-container__font' }, props.row.rStatus ? 'Acitve' : 'Inactive'),
+        ],
+      );
+    },
+  },
+  {
+    label: 'Shop Status',
+    prop: 'status',
+    width: 200,
+    cellRenderer(props: any) {
+      return h(
+        GTableStatus,
+        {
+          statusData: {
+            status: props.row.status + 1,
+          },
+        },
+        {
+          default: () => (props.row.status ? 'Open' : 'Closed'),
+        },
+      );
+    },
+  },
+  {
     label: 'Shop Dimension',
     prop: 'dimension',
     width: 400,
+    headerRenderer(props: any) {
+      console.log(props);
+      return h('div', {}, [
+        props.column.label,
+        h(
+          ElTooltip,
+          {
+            content: 'Total: 500（temp）',
+          },
+          {
+            default: () => h('i', { class: 'iconfont icon-sum' }),
+          },
+        ),
+      ]);
+    },
   },
   {
     label: 'Country',
@@ -105,6 +164,7 @@ const columns: any = ref([
           const result = sourceData.value.filter((item: any) => {
             return item.country.indexOf(value.label) > -1;
           });
+          pagination.currentPage = 1;
           pagination.total = result.length;
           tableData.value = result.slice(0, pagination.pageSize);
           loading.value = false;
@@ -128,6 +188,7 @@ const columns: any = ref([
         setTimeout(() => {
           const result = sourceData.value.filter((item) => value.indexOf(item.address) > -1);
           pagination.total = result.length;
+          pagination.currentPage = 1;
           tableData.value = result.slice(0, pagination.pageSize);
           loading.value = false;
         }, 500);
@@ -139,8 +200,12 @@ const columns: any = ref([
   },
 ]);
 const resetTableData = () => {
-  pagination.total = sourceData.value.length;
-  tableData.value = sourceData.value.slice(0, pagination.pageSize);
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+    pagination.total = sourceData.value.length;
+    tableData.value = sourceData.value.slice(0, pagination.pageSize);
+  }, 500);
 };
 
 const loading = ref(true);
@@ -152,7 +217,14 @@ const pagination = reactive({
 });
 
 const handlePageSizeChange = (size: number) => {
-  tableData.value = sourceData.value.slice(0, size);
+  tableData.value = sourceData.value.slice(
+    (pagination.currentPage - 1) * pagination.pageSize,
+    pagination.currentPage * size,
+  );
+};
+
+const handleCurrentChange = (current: number) => {
+  tableData.value = sourceData.value.slice((current - 1) * pagination.pageSize, current * pagination.pageSize);
 };
 
 setTimeout(() => {
@@ -160,3 +232,26 @@ setTimeout(() => {
   tableData.value = sourceData.value.slice(0, pagination.pageSize);
 }, 1500);
 </script>
+
+<style lang="scss">
+.status-container {
+  display: flex;
+  align-items: center;
+  .status-container__circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  .circle-active {
+    background: #1be993;
+  }
+  .circle-error {
+    background: rgb(247, 55, 55);
+  }
+  .status-container__font {
+    font-size: 12px;
+    color: #545252;
+  }
+}
+</style>
