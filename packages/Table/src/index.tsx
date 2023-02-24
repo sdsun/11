@@ -428,7 +428,13 @@ export default defineComponent({
         {...unref(loadingBackground)}
         {...unref(convertLoadingConfig)}
       >
-        {renderFullScreen()}
+        <div class="g-table-content">
+          <div class="g-table-content__left"></div>
+          <div class="g-table-content__right">
+            {slots.tableRight && slots.tableRight()}
+            {renderFullScreen()}
+          </div>
+        </div>
         {renderTable()}
       </div>
     );
