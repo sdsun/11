@@ -50,6 +50,7 @@ const filterItems = ref<ScalableFilters>([
         },
       ],
       multiple: true,
+      placeholder: 'Please input maintain batch id',
     },
   },
   {
