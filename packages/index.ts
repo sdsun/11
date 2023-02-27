@@ -10,3 +10,4 @@ export * from './EasyCheckboxs';
 export * from './EasyRadiosOrCheckboxs';
 export * from './DrawerPanel';
 export * from './SectionGroup';
+export * from './SectionContainer';
