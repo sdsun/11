@@ -10,3 +10,6 @@ export * from './EasyCheckboxs';
 export * from './EasyRadiosOrCheckboxs';
 export * from './DrawerPanel';
 export * from './SectionGroup';
+export * from './ScalableFilterArea';
+export * from './PanelTable';
+export * from './PanelTabs';
