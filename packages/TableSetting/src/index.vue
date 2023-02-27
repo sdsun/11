@@ -19,7 +19,7 @@ export default {
         <ul class="table-columns">
           <draggable v-model="listInCom" item-key="prop" tag="transition-group" v-bind="dragOptions">
             <!-- <transition-group type="transition" name="flip-list"> -->
-            <li v-for="(element, ei) in listInCom" :key="element.prop + ei" class="table-column-item">
+            <li v-for="(element, ei) in listInCom" :key="ei" class="table-column-item">
               <div class="table-column-check">
                 <el-checkbox v-model="element.show" :disabled="element.show && showedColumnsLength < 2"></el-checkbox>
               </div>
