@@ -174,9 +174,7 @@ const columns: any = ref([
       return h(
         GTableStatus,
         {
-          statusData: {
-            status: props.row.status + 1,
-          },
+          status: props.row.status + 1,
         },
         {
           default: () => (props.row.status ? 'Open' : 'Closed'),

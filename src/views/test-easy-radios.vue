@@ -22,6 +22,13 @@
       tooltip="value"
       :label="(item: any) => item.label + ' - ' + item.value"
     ></GEasyRadiosOrCheckboxs>
+    <GEasyRadiosOrCheckboxs
+      v-model="radioValue3"
+      :lists="radiosLists"
+      tooltip="value"
+      type="radio"
+      :label="(item: any) => item.label + ' - ' + item.value"
+    ></GEasyRadiosOrCheckboxs>
   </div>
 </template>
 

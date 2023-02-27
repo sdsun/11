@@ -1,11 +1,12 @@
 <template>
   <template v-for="i in options" :key="i.status">
-    <GTableStatus :statusData="i">{{ i.label }}</GTableStatus>
+    <GTableStatus :status="i.status">{{ i.label }}</GTableStatus>
   </template>
 </template>
 
 <script setup lang="ts">
 import { GTableStatus } from 'packages/TableStatus';
+import { reactive } from 'vue';
 const options = reactive([
   {
     label: 'low1',
