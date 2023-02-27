@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import WarpTransition from "./Transition.vue";
 
 const visible = ref(true);
@@ -19,6 +19,11 @@ const props = withDefaults(defineProps<Props>(), {
 const handleToggole = () => {
   visible.value = !visible.value
 };
+
+const isOpen:any = inject("isOpenAll")
+watch(isOpen, (v:boolean) => {
+  visible.value = v
+})
 </script>
 
 <template>
