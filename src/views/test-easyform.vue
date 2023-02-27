@@ -20,13 +20,6 @@ const formRules = reactive<FormRules>({
     { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
   ],
   age: [
-    {
-      validator(rule: any, value: any, callback: any) {
-        console.log('object :>> ', { value, type: typeof value });
-        callback();
-      },
-      trigger: 'blur',
-    },
     { required: true, message: 'Please input Activity age', trigger: 'blur' },
     { type: 'number', min: 18, max: 55, message: 'age should be 18 to 55', trigger: 'blur' },
   ],
@@ -89,7 +82,7 @@ const fieldList = ref<FieldList>([
       onClick: () => console.log('customProps :>> ', Math.random()),
     },
     formItemProps: {
-      label: 'custom this is custom test while the label is too langer',
+      label: 'custom test while label is too longer',
       prop: 'custom',
     },
   },
@@ -103,7 +96,7 @@ const fieldList = ref<FieldList>([
       onClick: () => console.log('customProps :>> ', Math.random()),
     },
     formItemProps: {
-      label: '自定义组件自定义组件自定义组件自定义组件',
+      label: '自定义组件自定义组件自定义',
       prop: 'custom2',
     },
   },
@@ -111,7 +104,7 @@ const fieldList = ref<FieldList>([
     name: 'name',
     tooltip: 'this is name tooltip',
     formItemProps: {
-      label: 'Activity name Activity name',
+      label: 'Activity name or Activity name',
       prop: 'name',
       style: { width: '600px' },
     },
