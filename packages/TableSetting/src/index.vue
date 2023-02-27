@@ -35,8 +35,6 @@ export default {
                 </el-checkbox-group>
               </div>
             </li>
-            <pre>{{ modelValue }}</pre>
-
             <!-- </transition-group> -->
           </draggable>
         </ul>
