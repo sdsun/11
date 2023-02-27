@@ -1,6 +1,6 @@
 import { DATE_VALUE_FORMAT } from '../src/scalableFilterArea';
 
-export type FilterType = 'text' | 'select' | 'virtual-select' | 'date' | 'cascader';
+export type FilterType = 'text' | 'select' | 'virtual-select' | 'date' | 'cascader' | 'radio' | 'checkbox';
 export type FilterDateType = keyof typeof DATE_VALUE_FORMAT;
 
 export interface SelectOption {
@@ -14,6 +14,12 @@ export interface CascaderOption extends Record<string, unknown> {
   children?: Array<CascaderOption>;
 }
 
+export interface CheckboxOption {
+  label: string;
+  value: string | number;
+  name: string;
+}
+
 export interface FilterItemOptions {
   attributeName: string;
   placeholder?: string;
@@ -22,6 +28,8 @@ export interface FilterItemOptions {
   selectOptions?: Array<SelectOption>;
   cascaderOptions?: Array<CascaderOption>;
   multiple?: boolean;
+  radioOptions?: Array<SelectOption>;
+  checkboxOptions?: Array<CheckboxOption>;
 }
 
 export interface FilterItem {
