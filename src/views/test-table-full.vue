@@ -16,6 +16,7 @@
       @page-size-change="handlePageSizeChange"
       @page-current-change="handleCurrentChange"
     >
+      <template #tableLeft><GTableButton :options="options" /></template>
       <template #tableRight>
         <GTableSetting v-model="columns" :append-to-body="false" />
       </template>
@@ -78,7 +79,7 @@
 
 <script setup lang="ts">
 import { h } from 'vue';
-import { GTable, GTableSetting, GDrawerPanel, GSectionGroup } from 'packages';
+import { GTable, GTableSetting, GDrawerPanel, GSectionGroup, GTableButton } from 'packages';
 import { GTableStatus } from 'packages/TableStatus';
 import { ElTooltip } from 'element-plus';
 import useDrawer from '@/hooks/useDrawer';
@@ -327,6 +328,44 @@ const handleOpen = () => {
 const handleSubmit = () => {
   console.log('submit');
 };
+
+const options = reactive([
+  {
+    type: 'new',
+    label: '新建',
+    icon: '',
+    iconOpen: false,
+    iconName: '新建',
+  },
+  {
+    type: 'upload',
+    label: '上传',
+    icon: 'icon-shangchuan',
+    iconOpen: false,
+    iconName: '上传',
+  },
+  {
+    type: 'download',
+    label: '下载',
+    icon: 'icon-xiazai',
+    iconOpen: false,
+    iconName: '下载',
+  },
+  {
+    type: 'formwork',
+    label: '模板下载',
+    icon: 'icon-xiazai',
+    iconOpen: false,
+    iconName: '模板下载',
+  },
+  {
+    type: '2',
+    label: '测试1',
+    icon: '',
+    iconOpen: false,
+    iconName: '',
+  },
+]);
 </script>
 
 <style lang="scss" scoped>

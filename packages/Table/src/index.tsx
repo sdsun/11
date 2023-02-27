@@ -429,7 +429,7 @@ export default defineComponent({
         {...unref(convertLoadingConfig)}
       >
         <div class="g-table-content">
-          <div class="g-table-content__left"></div>
+          <div class="g-table-content__left">{slots.tableLeft && slots.tableLeft()}</div>
           <div class="g-table-content__right">
             {slots.tableRight && slots.tableRight()}
             {renderFullScreen()}
