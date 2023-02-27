@@ -26,17 +26,19 @@ const props = defineProps({
     default: '',
   },
 });
+onBeforeMount(() => {
+  console.log(props,'props====')
+});
 </script>
 <style lang="scss" scoped>
 .status {
   font-size: 12px;
   // display: inline-block;
   width: 52px;
-  height: 22px;
+  // height: 22px;
   font-weight: 500;
   text-align: center;
   border-radius: 3px;
-  margin-bottom: 5px;
   cursor: pointer;
 }
 .status1 {
