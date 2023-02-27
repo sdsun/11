@@ -1,5 +1,6 @@
 .g-table-container {
   background: #fff;
+  overflow-y: auto;
 }
 .g-table-header th.el-table__cell {
   background-color: rgb(250, 250, 250);
@@ -26,6 +27,8 @@
 .g-table-fullscreen .icon-fullscreen,
 .g-table-fullscreen .icon-fullscreen-exit {
   font-size: 20px;
+  vertical-align: middle;
+  color: var(--el-color-primary);
 }
 .g-table-filter__fill {
   color: var(--el-menu-active-color);
@@ -67,4 +70,17 @@
 
 .g-table-copyable .el-table__cell {
   user-select: none;
+}
+
+.g-table-content {
+  display: flex;
+  justify-content: space-between;
+}
+.g-table-content__left,
+.g-table-content__right {
+  display: flex;
+}
+.g-table-content__right {
+  text-align: right;
+  align-items: center;
 }
