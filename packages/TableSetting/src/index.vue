@@ -6,8 +6,8 @@ export default {
 </script>
 <template>
   <div class="table-setting">
-    <el-button :disabled="disabled" @click="clickSetting">
-      <slot>设置</slot>
+    <el-button :disabled="disabled" type="primary" link @click="clickSetting">
+      <slot><i class="iconfont icon-setting"></i></slot>
     </el-button>
     <el-drawer v-model="drawerVisiable" append-to-body v-bind="$attrs">
       <template #default>
@@ -121,6 +121,10 @@ defineExpose({ clickSetting });
 <style lang="scss" scoped>
 .table-setting {
   display: inline-block;
+}
+.icon-setting {
+  font-size: 20px;
+  // color: var(--el-color-primary)
 }
 .flip-list-move {
   transition: transform 0.5s;

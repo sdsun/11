@@ -1,14 +1,22 @@
 .g-table-container {
   background: #fff;
+  overflow-y: auto;
+}
+.g-table-header th.el-table__cell {
+  background-color: rgb(250, 250, 250);
+  color: #898989;
 }
 .g-table-header__top {
   vertical-align: top !important;
+}
+.g-table-header__item {
+  display: flex;
+  align-items: center;
 }
 
 .icon-reset {
   font-size: 14px;
 }
-
 .g-table-search {
   display: flex;
   justify-content: space-between;
@@ -19,4 +27,60 @@
 .g-table-fullscreen .icon-fullscreen,
 .g-table-fullscreen .icon-fullscreen-exit {
   font-size: 20px;
+  vertical-align: middle;
+  color: var(--el-color-primary);
+}
+.g-table-filter__fill {
+  color: var(--el-menu-active-color);
+}
+.g-table-popper .is-active {
+  background: var(--el-menu-hover-bg-color);
+  color: var(--el-menu-hover-text-color);
+}
+
+.g-table-popper .g-table-popper__btn {
+  min-width: 100px;
+  padding: 0 10px 10px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.g-table-popper .filter-item {
+  cursor: pointer;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 10px;
+  transition: all 300ms ease;
+  font-size: var(--el-checkbox-font-size);
+}
+.g-table-popper .filter-item:hover {
+  background: var(--el-menu-hover-bg-color);
+  color: var(--el-menu-hover-text-color);
+}
+.g-table-popper .el-divider--horizontal {
+  margin: 5px 0;
+}
+.g-table-popper .g-table-popper__checkbox {
+  padding: 0 10px;
+}
+.g-table-popper .g-table-popper__disabled {
+  cursor: not-allowed;
+  color: #ccc;
+}
+
+.g-table-copyable .el-table__cell {
+  user-select: none;
+}
+
+.g-table-content {
+  display: flex;
+  justify-content: space-between;
+}
+.g-table-content__left,
+.g-table-content__right {
+  display: flex;
+}
+.g-table-content__right {
+  text-align: right;
+  align-items: center;
 }

@@ -19,13 +19,14 @@ export declare type ItemType =
   | 'radio'
   | 'checkbox'
   | 'select'
-  | 'date'
-  | 'time'
+  | 'date-picker'
+  | 'time-picker'
   | 'switch'
-  | 'number';
+  | 'input-number';
 // 当FiledItem的type === 'radio' | 'checkbox'时，options的参数类型
 
 export interface FieldOptions extends Partial<FormProps> {
+  formItemWidth?: string;
   showResetButton?: boolean; // 是否展示重置按钮
   showCancelButton?: boolean; // 是否展示取消按钮
   submitButtonText?: string;
@@ -48,6 +49,8 @@ export interface FieldItem {
   name: string; // aaaa
   /** 数据的值 */
   value?: any;
+
+  tooltip?: any;
 
   /** el-form-item 属性 */
   formItemProps: FieldFormItemProps;

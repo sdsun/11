@@ -1,6 +1,6 @@
 <template>
   <div>
-    <GTableSetting v-model="tableColumns" :with-header="false">设置</GTableSetting>
+    <GTableSetting v-model="tableColumns" :with-header="false"></GTableSetting>
     <el-button @click="sort">乱序</el-button>
     <div style="display: flex">
       <pre>{{ tableColumns }}</pre>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { GTableSetting } from 'packages/TableSetting';
+import { GTableSetting } from 'packages';
 interface TableColumnsItemType {
   label?: string;
   prop?: string;

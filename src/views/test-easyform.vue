@@ -8,7 +8,7 @@
 
 <script setup lang="tsx">
 import { FieldItem, FieldList, FieldOptions } from 'packages/EasyForm/type';
-import GEasyForm from 'packages/EasyForm/index.vue';
+import { GEasyForm } from 'packages';
 import { FormRules } from 'element-plus';
 
 const CustomComponent = (props: any) => {
@@ -47,7 +47,6 @@ const formRules = reactive<FormRules>({
   ],
   date2: [
     {
-      type: 'date',
       required: true,
       message: 'Please pick a time',
       trigger: 'change',
@@ -71,13 +70,14 @@ const formRules = reactive<FormRules>({
   desc: [{ required: true, message: 'Please input activity form', trigger: 'blur' }],
 });
 const formOptions: Partial<FieldOptions> = {
-  labelWidth: 120,
+  // inline: true,
+  labelWidth: 130,
   statusIcon: true,
   showResetButton: true,
   showCancelButton: true,
+  // formItemWidth: '400px',
   rules: formRules,
 };
-
 const fieldList = ref<FieldList>([
   {
     type: 'custom',
@@ -89,20 +89,35 @@ const fieldList = ref<FieldList>([
       onClick: () => console.log('customProps :>> ', Math.random()),
     },
     formItemProps: {
-      label: 'custom',
+      label: 'custom this is custom test while the label is too langer',
       prop: 'custom',
     },
   },
   {
-    name: 'name',
+    type: 'custom',
+    name: 'custom2',
+    component: markRaw(CustomComponent),
+    customProps: {
+      tag: 'h1',
+      msg: '----->自定义组件渲染区域<-----',
+      onClick: () => console.log('customProps :>> ', Math.random()),
+    },
     formItemProps: {
-      label: 'Activity name',
+      label: '自定义组件自定义组件自定义组件自定义组件',
+      prop: 'custom2',
+    },
+  },
+  {
+    name: 'name',
+    tooltip: 'this is name tooltip',
+    formItemProps: {
+      label: 'Activity name Activity name',
       prop: 'name',
       style: { width: '600px' },
     },
   },
   {
-    type: 'number',
+    type: 'input-number',
     name: 'age',
     formItemProps: {
       label: 'age',
@@ -132,7 +147,7 @@ const fieldList = ref<FieldList>([
     ],
   },
   {
-    type: 'date',
+    type: 'date-picker',
     name: 'date1',
     formItemProps: {
       label: 'Activity date',
@@ -141,7 +156,7 @@ const fieldList = ref<FieldList>([
     },
   },
   {
-    type: 'time',
+    type: 'time-picker',
     name: 'date2',
     formItemProps: {
       label: 'Activity time2',
@@ -169,8 +184,8 @@ const fieldList = ref<FieldList>([
       valueKey: 'label',
     },
     groupDatas: [
-      { label: 'Online activities', name: 'type' },
-      { label: 'Promotion activities', name: 'type' },
+      { label: 'Online activities', name: 'type', tooltip: 'hahhahahhahahahahahah' },
+      { label: 'Promotion activities', name: 'type', tooltip: 'hahhahahhahahahahahah' },
       { label: 'Offline activities', name: 'type' },
       { label: 'Simple brand exposure', name: 'type' },
     ],
@@ -190,6 +205,17 @@ const fieldList = ref<FieldList>([
       { label: 'Sponsorship', name: 'resource' },
       { label: 'Venue', name: 'resource' },
     ],
+  },
+  {
+    name: 'remark',
+    tooltip: '在这里我们提供 9 种不同方向的展示方式，可以通过以下完整示例来理解，选择你要的效果。',
+    formItemProps: {
+      label: 'Remark',
+    },
+    inputItemProps: {
+      type: 'textarea',
+      autosize: { minRows: 2, maxRows: 4 },
+    },
   },
 ]);
 

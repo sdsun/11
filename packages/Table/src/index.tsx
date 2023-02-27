@@ -1,6 +1,14 @@
 import 'element-plus/es/components/table/style/css';
 import 'element-plus/es/components/pagination/style/css';
 import 'element-plus/es/components/loading/style/css';
+import 'element-plus/es/components/dropdown/style/css';
+import 'element-plus/es/components/dropdown-item/style/css';
+import 'element-plus/es/components/divider/style/css';
+import 'element-plus/es/components/checkbox-group/style/css';
+import 'element-plus/es/components/checkbox/style/css';
+import 'element-plus/es/components/message/style/css';
+import 'element-plus/es/components/tooltip/style/css';
+// import 'element-plus/es/components/alert/style/css';
 import '../css/index.css';
 import {
   ref,
@@ -13,10 +21,20 @@ import {
   getCurrentInstance,
   type CSSProperties,
 } from 'vue';
+import copy from 'copy-to-clipboard';
 import props from './props';
 import Renderer from '../renderer';
-import { GSelect } from 'packages/Select';
-import { ElPagination, ElTable, ElTableColumn, ElInput } from 'element-plus';
+import {
+  ElPagination,
+  ElTable,
+  ElTableColumn,
+  ElMessage,
+  ElDivider,
+  ElCheckboxGroup,
+  ElCheckbox,
+  ElTooltip,
+  // ElAlert,
+} from 'element-plus';
 import { GTableProps } from '../types';
 import { useFullScreen } from './fullscreen';
 
@@ -55,51 +73,53 @@ export default defineComponent({
       headerAlign,
       showOverflowTooltip,
       pagination,
+      copyable,
+      checkable,
     } = toRefs(props) as unknown as GTableProps;
-    // columns列表中searchType不为false的数量
-    const valueList = ref(new Array(unref(columns).filter((item) => item.searchType).length).fill(''));
+    // columns列表中filterType不为false的数量
+    const valueList = reactive(new Array(unref(columns).filter((item) => item.filterType).length).fill(''));
+    const resetFilter = () => {
+      valueList.forEach((value, index) => {
+        if (value instanceof Array) {
+          value.splice(0);
+        } else {
+          valueList.splice(index, 1, undefined);
+        }
+      });
+    };
+    if (unref(countable)) {
+      unref(columns).unshift({
+        width: 60,
+        headerRenderer(params: any) {
+          return countable ? <div class="g-table-search">No.</div> : <div></div>;
+        },
+        cellRenderer({ index }) {
+          return <div>{index + 1}</div>;
+        },
+      });
+    }
+    if (unref(checkable)) {
+      unref(columns).unshift({
+        type: 'selection',
+        width: 55,
+      });
+    }
     // 增加内部用于计数的方法__valueIdx
     const addInnerApi = (): void => {
       let count = 0;
       unref(columns).forEach((item: any) => {
-        if (item.searchType) {
+        if (item.filterType) {
           item.__valueIdx = count;
+          if (item.filterType === 'checkbox') {
+            valueList[count] = [];
+          }
           count++;
         }
       });
       count = 0;
     };
     addInnerApi();
-    const handleSearch = () => {
-      emit('search', unref(valueList));
-    };
-    const handleReset = () => {
-      for (let i = 0; i < valueList.value.length; i++) {
-        valueList.value[i] = '';
-      }
-      emit('reset');
-    };
-    unref(countable) &&
-      unref(columns).unshift({
-        width: 60,
-        headerRenderer(params: any) {
-          return countable ? (
-            <div class="g-table-search">
-              <a href="javascript:void(0)">
-                <i onClick={handleSearch} class="iconfont icon-search"></i>
-              </a>
-              <a href="javascript:void(0)">
-                <i onClick={handleReset} class="iconfont icon-reset"></i>
-              </a>
-            </div>
-          ) : (
-            <div></div>
-          );
-        },
-        cellRenderer({ index }) {
-          return <div>{index + 1}</div>;
-        },
-      });
+
     let convertLoadingConfig = computed(() => {
       if (!loadingConfig || !unref(loadingConfig)) return;
       let { text, spinner, svg, viewBox } = unref(loadingConfig);
@@ -149,7 +169,7 @@ export default defineComponent({
     let conditions = pagination && unref(pagination) && unref(pagination).currentPage && unref(pagination).pageSize;
 
     const renderColumns = (column: Record<string, any>, index: number) => {
-      // 新增searchType
+      // 新增filterType
       const {
         cellRenderer,
         slot,
@@ -157,30 +177,107 @@ export default defineComponent({
         hide,
         children,
         prop,
-        searchType,
-        searchOpts,
-        searchOptKeys,
+        filterType,
+        filterOpts,
+        filterOptKeys,
+        onFilter,
         ...args
       } = column;
-      const renderSearchColumn = (index: number, scope: any) => {
+      const renderFilterColumn = (index: number, scope: any) => {
+        if (!filterType) return;
         let valueIdx = unref(columns)[index].__valueIdx as number;
-        switch (searchType) {
-          case 'input':
-            return <ElInput clearable v-model={valueList.value[valueIdx]} size="small"></ElInput>;
-          case 'select':
-            return (
-              <GSelect
-                clearable
-                v-model={valueList.value[valueIdx]}
-                options={searchOpts}
-                option-keys={searchOptKeys}
-                size="small"
-                style="width: 100%"
-              ></GSelect>
-            );
-          default:
+        // dropdown列表的Confirm是否可点击
+        const confirmDisabled = filterType === 'checkbox' && valueList[valueIdx] && valueList[valueIdx].length === 0;
+        const renderDropdownItem = () => {
+          switch (filterType) {
+            case 'select':
+              return unref(filterOpts).map((item: any) => (
+                <>
+                  <div
+                    class={valueList[valueIdx] === item ? 'filter-item is-active' : 'filter-item'}
+                    onClick={() => handleDropdown(item)}
+                  >
+                    <span>{item[filterOptKeys[0]]}</span>
+                  </div>
+                </>
+              ));
+            case 'checkbox':
+              return (
+                <ElCheckboxGroup v-model={valueList[valueIdx]} class="g-table-popper__checkbox">
+                  {unref(filterOpts).map((item: any) => (
+                    <div>
+                      <ElCheckbox label={item[filterOptKeys[1]]}>{item[filterOptKeys[0]]}</ElCheckbox>
+                    </div>
+                  ))}
+                </ElCheckboxGroup>
+              );
+            case 'date':
+            default:
+              return;
+          }
+        };
+        const handleDropdown = (cmd: any) => {
+          valueList[valueIdx] = cmd;
+          onFilter && onFilter(valueList[valueIdx]);
+        };
+        const handleResetFilter = () => {
+          if (filterType === 'checkbox') {
+            valueList[valueIdx].splice(0);
+          } else {
+            valueList[valueIdx] = undefined;
+          }
+          onFilter && onFilter(valueList[valueIdx]);
+        };
+        const handleConfirm = () => {
+          if (confirmDisabled) {
             return;
-        }
+          }
+          onFilter && onFilter(valueList[valueIdx]);
+        };
+        const renderConfirmBtn = () => {
+          if (filterType === 'checkbox') {
+            return (
+              <a
+                href="javascript:void(0)"
+                onClick={handleConfirm}
+                className={confirmDisabled ? 'g-table-popper__disabled' : ''}
+              >
+                Confirm
+              </a>
+            );
+          }
+        };
+        const renderFilterIcon = () => {
+          switch (filterType) {
+            case 'checkbox':
+              return `iconfont icon-filter${valueList[valueIdx].length ? '-fill g-table-filter__fill' : ''}`;
+            default:
+              return `iconfont icon-filter${valueList[valueIdx] ? '-fill g-table-filter__fill' : ''}`;
+          }
+        };
+        const tooltipSlot = {
+          default: () => <i class="iconfont" className={renderFilterIcon()}></i>,
+          content: () =>
+            filterOpts && filterOpts.length > 0 ? (
+              <>
+                {renderDropdownItem()}
+                <ElDivider />
+                <div class="g-table-popper__btn">
+                  {renderConfirmBtn()}
+                  <a href="javascript:void(0)" onClick={handleResetFilter}>
+                    Reset
+                  </a>
+                </div>
+              </>
+            ) : (
+              <div>No Data</div>
+            ),
+        };
+        return (
+          <ElTooltip popper-class="g-table-popper" effect="light" content="test" appendTo=".g-table-container">
+            {tooltipSlot}
+          </ElTooltip>
+        );
       };
 
       const defaultSlots = {
@@ -228,9 +325,11 @@ export default defineComponent({
             // 新增
             header: (scope: any) => {
               return (
-                <div>
-                  <div>{args.label}</div>
-                  {renderSearchColumn(index, scope)}
+                <div style="display:inline-block">
+                  <div class="g-table-header__item">
+                    <span>{args.label}</span>
+                    {renderFilterColumn(index, scope)}
+                  </div>
                 </div>
               );
             },
@@ -270,12 +369,28 @@ export default defineComponent({
       getTableRef,
       /** @description Get Table Doms */
       getTableDoms,
+      /** @description Reset table columns filter value */
+      resetFilter,
     });
 
     let renderTable = () => {
+      const dbClickCopy = (row: any, column: any, cell: any) => {
+        if (!unref(copyable)) return;
+        copy(row[column.property]);
+        ElMessage({
+          message: 'Cell Copied!',
+        });
+      };
       return (
         <>
-          <ElTable class="g-table" {...props} {...attrs} ref={`TableRef${props.key}`}>
+          <ElTable
+            class={unref(copyable) ? 'g-table g-table-copyable' : 'g-table'}
+            {...props}
+            {...attrs}
+            headerRowClassName={`g-table-header${props.headerRowClassName ? ' ' + props.headerRowClassName : ''}`}
+            ref={`TableRef${props.key}`}
+            onCellDblclick={dbClickCopy}
+          >
             {{
               default: () => unref(columns).map(renderColumns),
               append: () => slots.append && slots.append(),
@@ -313,7 +428,13 @@ export default defineComponent({
         {...unref(loadingBackground)}
         {...unref(convertLoadingConfig)}
       >
-        {renderFullScreen()}
+        <div class="g-table-content">
+          <div class="g-table-content__left"></div>
+          <div class="g-table-content__right">
+            {slots.tableRight && slots.tableRight()}
+            {renderFullScreen()}
+          </div>
+        </div>
         {renderTable()}
       </div>
     );
