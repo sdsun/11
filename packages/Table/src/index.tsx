@@ -336,8 +336,8 @@ export default defineComponent({
             ...defaultSlots,
           };
 
-      if (hide && hide(attrs)) {
-        return hide(attrs);
+      if (hide && hide(attrs, column, index)) {
+        return hide(attrs, column, index);
       }
 
       if (children?.length > 0) {
@@ -392,6 +392,7 @@ export default defineComponent({
             onCellDblclick={dbClickCopy}
           >
             {{
+              // default: () => unref(columns).filter(item => (item as any).show).map(renderColumns),
               default: () => unref(columns).map(renderColumns),
               append: () => slots.append && slots.append(),
               empty: () => slots.empty && slots.empty(),
