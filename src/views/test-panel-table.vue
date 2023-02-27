@@ -1,16 +1,8 @@
 <template>
   <GPanelTable>
     <template #form> <GScalableFilterArea v-model="model" :filter-items="filterItems" /> </template>
-    <template #operation>
-      <el-button type="primary">New</el-button>
-      <el-button type="primary">Template</el-button>
-    </template>
-    <template #control>
-      <el-icon><FullScreen /></el-icon>
-      <el-icon><Setting /></el-icon>
-    </template>
     <template #table>
-      <TestTable />
+      <TestTableFull />
     </template>
   </GPanelTable>
 </template>
@@ -19,7 +11,7 @@
 import { GPanelTable, GScalableFilterArea } from 'packages';
 
 import { ScalableFilters, FilterModelValue } from 'packages/ScalableFilterArea/types';
-import TestTable from './test-table.vue';
+import TestTableFull from './test-table-full.vue';
 
 const filterItems = ref<ScalableFilters>([
   {
@@ -224,10 +216,39 @@ const filterItems = ref<ScalableFilters>([
     },
   },
   {
-    type: 'text',
+    type: 'radio',
     label: 'long-long-long-long-long-long-long-long',
     options: {
       attributeName: 'test6',
+      radioOptions: [
+        {
+          value: '1',
+          label: 'test1',
+        },
+        {
+          value: '2',
+          label: 'test2',
+        },
+      ],
+    },
+  },
+  {
+    type: 'checkbox',
+    label: 'long-long-long-long-long-long-long-long',
+    options: {
+      attributeName: 'test6',
+      checkboxOptions: [
+        {
+          label: 'test1',
+          value: '1',
+          name: 'test6',
+        },
+        {
+          label: 'test2',
+          value: '2',
+          name: 'test6',
+        },
+      ],
     },
   },
 ]);
