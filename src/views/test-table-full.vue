@@ -140,15 +140,21 @@ const columns: any = ref([
     prop: 'code',
     width: 400,
     sortable: true,
+    show: true,
+    hide(attr: any, column: any) { return column.show === false},
   },
   {
     label: 'Shop Name',
     prop: 'name',
+    show: true,
     width: 400,
+    hide(attr: any, column: any) { return column.show === false},
   },
   {
     label: 'Not Retail Status',
     prop: 'rStatus',
+    show: true,
+    hide(attr: any, column: any) { return column.show === false},
     width: 200,
     cellRenderer(props: any) {
       return h(
@@ -170,7 +176,9 @@ const columns: any = ref([
   {
     label: 'Shop Status',
     prop: 'status',
+    show: true,
     width: 200,
+    hide(attr: any, column: any) { return column.show === false},
     cellRenderer(props: any) {
       return h(
         GTableStatus,
@@ -186,7 +194,9 @@ const columns: any = ref([
   {
     label: 'Shop Dimension',
     prop: 'dimension',
+    show: true,
     width: 400,
+    hide(attr: any, column: any) { return column.show === false},
     headerRenderer(props: any) {
       console.log(props);
       return h('div', {}, [
@@ -207,6 +217,8 @@ const columns: any = ref([
     label: 'Country',
     prop: 'country',
     width: 400,
+    show: true,
+    hide(attr: any, column: any) { return column.show === false},
     filterType: 'select',
     filterOpts: countryData,
     filterOptKeys: ['label', 'value'],
@@ -232,6 +244,8 @@ const columns: any = ref([
     label: 'Address',
     prop: 'address',
     width: 400,
+    show: true,
+    hide(attr: any, column: any) { return column.show === false},
     filterType: 'checkbox',
     filterOpts: sideData,
     filterOptKeys: ['label', 'label'],
@@ -254,6 +268,8 @@ const columns: any = ref([
   {
     label: 'Action',
     width: 100,
+    show: true,
+    hide(attr: any, column: any) { return column.show === false},
     fixed: 'right',
     cellRenderer(props: any) {
       return h('div', { class: 'action-btn' }, [

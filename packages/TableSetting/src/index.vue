@@ -19,11 +19,11 @@ export default {
         <ul class="table-columns">
           <draggable v-model="listInCom" item-key="prop" tag="transition-group" v-bind="dragOptions">
             <!-- <transition-group type="transition" name="flip-list"> -->
-            <li v-for="element in listInCom" :key="element.prop" class="table-column-item">
+            <li v-for="(element, ei) in listInCom" :key="ei" class="table-column-item">
               <div class="table-column-check">
                 <el-checkbox v-model="element.show" :disabled="element.show && showedColumnsLength < 2"></el-checkbox>
               </div>
-              <div class="table-column-label">{{ element.label }}</div>
+              <div class="table-column-label">{{ element.type === 'selection' ? 'Checkbox' : element.label }}</div>
               <!-- <div class="table-column-show">
                 <el-switch v-model="element.show" inline-prompt active-text="是" inactive-text="否" />
               </div> -->
@@ -35,6 +35,8 @@ export default {
                 </el-checkbox-group>
               </div>
             </li>
+            <pre>{{ modelValue }}</pre>
+
             <!-- </transition-group> -->
           </draggable>
         </ul>
@@ -69,7 +71,7 @@ const listInCom = computed({
     emits('update:model-value', v);
   },
   get() {
-    return props.modelValue;
+    return props.modelValue.filter(item => item.label);
   },
 });
 const showedColumnsLength = computed(() => (props.modelValue || []).filter((item) => item.show).length);
@@ -140,6 +142,7 @@ defineExpose({ clickSetting });
   }
   .table-column-label {
     flex: 1 1 100px;
+    text-align: left;
   }
   .table-column-check {
     width: 40px;
