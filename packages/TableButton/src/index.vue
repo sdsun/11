@@ -7,107 +7,107 @@ export default {
 <template>
   <div class="table-button">
     <div v-for="(item, index) in buttonData" :key="index">
-      <div class="gtm-button" v-if="item.type === 'new'">
+      <div v-if="item.type === 'new'" class="gtm-button">
         <span
+          class="status"
+          :class="item.icon ? 'radius-right' : 'radius-whole'"
           @click="item.icon ? '' : newEvent(item)"
-          class="status"
-          :class="item.icon ? 'radius-right' : 'radius-whole'"
           >{{ item.label }}</span
         >
-        <span class="icon" v-if="item.icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
+        <span v-if="item.icon" class="icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
           ><i class="iconfont" :class="item.icon"></i
         ></span>
         <transition name="fade">
           <span
             v-if="item.iconOpen"
+            class="dropdown-open"
             @click="iconEvent(item)"
             @mouseenter="mouseenter(item)"
             @mouseleave="mouseleave(item)"
-            class="dropdown-open"
             ><i class="iconfont" :class="item.icon"></i><span>{{ item.iconName }}</span></span
           ></transition
         >
       </div>
-      <div class="gtm-button" v-else-if="item.type === 'download'">
+      <div v-else-if="item.type === 'download'" class="gtm-button">
         <span
+          class="status"
+          :class="item.icon ? 'radius-right' : 'radius-whole'"
           @click="item.icon ? '' : downloadEvent(item)"
-          class="status"
-          :class="item.icon ? 'radius-right' : 'radius-whole'"
           >{{ item.label }}</span
         >
-        <span v-if="item.icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)" class="icon"
+        <span v-if="item.icon" class="icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
           ><i class="iconfont" :class="item.icon"></i
         ></span>
         <transition name="fade">
           <span
             v-if="item.iconOpen"
+            class="dropdown-open"
             @click="iconEvent(item)"
             @mouseenter="mouseenter(item)"
             @mouseleave="mouseleave(item)"
-            class="dropdown-open"
             ><i class="iconfont" :class="item.icon"></i><span>{{ item.iconName }}</span></span
           >
         </transition>
       </div>
-      <div class="gtm-button" v-else-if="item.type === 'upload'">
+      <div v-else-if="item.type === 'upload'" class="gtm-button">
         <span
+          class="status"
+          :class="item.icon ? 'radius-right' : 'radius-whole'"
           @click="item.icon ? '' : uploadEvent(item)"
-          class="status"
-          :class="item.icon ? 'radius-right' : 'radius-whole'"
           >{{ item.label }}</span
         >
-        <span class="icon" v-if="item.icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
+        <span v-if="item.icon" class="icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
           ><i class="iconfont" :class="item.icon"></i
         ></span>
         <transition name="fade">
           <span
             v-if="item.iconOpen"
+            class="dropdown-open"
             @click="iconEvent(item)"
             @mouseenter="mouseenter(item)"
             @mouseleave="mouseleave(item)"
-            class="dropdown-open"
             ><i class="iconfont" :class="item.icon"></i><span>{{ item.iconName }}</span></span
           >
         </transition>
       </div>
-      <div class="gtm-button" v-else-if="item.type === 'formwork'">
+      <div v-else-if="item.type === 'formwork'" class="gtm-button">
         <span
-          @click="item.icon ? '' : formworkEvent(item)"
           class="status"
           :class="item.icon ? 'radius-right' : 'radius-whole'"
+          @click="item.icon ? '' : formworkEvent(item)"
           >{{ item.label }}</span
         >
-        <span class="icon" v-if="item.icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
+        <span v-if="item.icon" class="icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
           ><i class="iconfont" :class="item.icon"></i
         ></span>
         <transition name="fade">
           <span
             v-if="item.iconOpen"
+            class="dropdown-open"
             @click="iconEvent(item)"
             @mouseenter="mouseenter(item)"
             @mouseleave="mouseleave(item)"
-            class="dropdown-open"
             ><i class="iconfont" :class="item.icon"></i><span>{{ item.iconName }}</span></span
           ></transition
         >
       </div>
-      <div class="gtm-button" v-else>
+      <div v-else class="gtm-button">
         <span
-          @click="item.icon ? '' : commonEvent(item)"
           class="status"
           :class="item.icon ? 'radius-right' : 'radius-whole'"
+          @click="item.icon ? '' : commonEvent(item)"
           >{{ item.label }}</span
         >
-        <span class="icon" v-if="item.icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
+        <span v-if="item.icon" class="icon" @mouseenter="mouseenter(item)" @mouseleave="mouseleave(item)"
           ><i class="iconfont" :class="item.icon"></i
         ></span>
         <transition name="fade">
           <span
             v-if="item.iconOpen"
+            class="dropdown-open"
             @click="iconEvent(item)"
             @mouseenter="mouseenter(item)"
             @mouseleave="mouseleave(item)"
-            class="dropdown-open"
             ><i class="iconfont" :class="item.icon"></i><span>{{ item.iconName }}</span></span
           ></transition
         >
@@ -226,6 +226,7 @@ const buttonData = computed<ButtonFilters>(() => {
     font-size: 12px;
     box-shadow: 2px 2px 15px #c9cbcf;
     animation-duration: 1s;
+    z-index: 99;
   }
   .fade-enter,
   .fade-leave-to {

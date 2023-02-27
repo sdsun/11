@@ -5,10 +5,18 @@ export default {
 };
 </script>
 <template>
-  <div v-show="status === 1" class="status status1"><slot></slot></div>
-  <div v-show="status === 2" class="status status2"><slot></slot></div>
-  <div v-show="status === 3" class="status status3"><slot></slot></div>
-  <div v-show="status === 4" class="status status4"><slot></slot></div>
+  <div v-show="statusData.status === 1" class="status" :class="statusData.color ? statusData.color : 'status1'">
+    <slot></slot>
+  </div>
+  <div v-show="statusData.status === 2" class="status" :class="statusData.color ? statusData.color : 'status1'">
+    <slot></slot>
+  </div>
+  <div v-show="statusData.status === 3" class="status" :class="statusData.color ? statusData.color : 'status1'">
+    <slot></slot>
+  </div>
+  <div v-show="statusData.status === 4" class="status" :class="statusData.color ? statusData.color : 'status1'">
+    <slot></slot>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -21,13 +29,13 @@ import { onBeforeMount, reactive, toRefs, defineEmits, watch, ref } from 'vue';
 可根据后端字段调整
 */
 const props = defineProps({
-  status: {
-    type: Number,
+  statusData: {
+    type: Object,
     default: '',
   },
 });
 onBeforeMount(() => {
-  console.log(props,'props====')
+  console.log(props, 'props====');
 });
 </script>
 <style lang="scss" scoped>

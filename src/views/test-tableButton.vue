@@ -1,12 +1,12 @@
 <template>
   <GTableButton
-    @newChange="newChange"
-    @downloadChange="downloadChange"
-    @formworkChange="formworkChange"
-    @uploadChange="uploadChange"
-    @commonChange="commonChange"
-    @iconChange="iconChange"
     :options="options"
+    @new-change="newChange"
+    @download-change="downloadChange"
+    @formwork-change="formworkChange"
+    @upload-change="uploadChange"
+    @common-change="commonChange"
+    @icon-change="iconChange"
   ></GTableButton>
 </template>
 
@@ -48,9 +48,6 @@ const iconChange = (item: any) => {
       console.log(item);
       break;
     case 'download':
-      console.log(item);
-      break;
-    case 'upload':
       console.log(item);
       break;
     case 'formwork':
