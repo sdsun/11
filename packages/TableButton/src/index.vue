@@ -119,7 +119,7 @@ export default {
 <script setup lang="ts">
 import { onBeforeMount, reactive, toRefs, defineEmits, watch, ref } from 'vue';
 import { ButtonFilters } from '../types/index';
-export interface FilterAreaProps {
+export interface ButtonFiltersProps {
   options: ButtonFilters;
 }
 const emits = defineEmits([
@@ -130,7 +130,7 @@ const emits = defineEmits([
   'commonChange',
   'iconChange',
 ]);
-const props = withDefaults(defineProps<FilterAreaProps>(), {
+const props = withDefaults(defineProps<ButtonFiltersProps>(), {
   options: () => [],
 });
 const newEvent = (item: any) => {
