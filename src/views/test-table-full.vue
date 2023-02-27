@@ -20,14 +20,68 @@
         <GTableSetting v-model="columns" :append-to-body="false" />
       </template>
     </GTable>
+    <GDrawerPanel
+      v-model:visible="visible"
+      title="Edit"
+      :loading="editLoading"
+      :is-edit="true"
+      @update:model-value="closeDrawer"
+      @submit="handleSubmit"
+    >
+      <el-form :model="form" label-width="120px">
+        <h1 :style="{ margin: '20px' }">风格1: 默认</h1>
+        <GSectionGroup title="BASIC">
+          <template #desc> desc this part</template>
+          <el-form-item label="Activity name">
+            <el-input v-model="form.name" />
+          </el-form-item>
+          <el-form-item label="Activity zone">
+            <el-select v-model="form.region" placeholder="please select your zone">
+              <el-option label="Zone one" value="shanghai" />
+              <el-option label="Zone two" value="beijing" />
+            </el-select>
+          </el-form-item>
+        </GSectionGroup>
+        <GSectionGroup title="BASIC">
+          <template #desc> desc this part</template>
+          <el-form-item label="Activity name">
+            <el-input v-model="form.name1" />
+          </el-form-item>
+          <el-form-item label="Activity zone">
+            <el-select v-model="form.region1" placeholder="please select your zone">
+              <el-option label="Zone one" value="shanghai" />
+              <el-option label="Zone two" value="beijing" />
+            </el-select>
+          </el-form-item>
+        </GSectionGroup>
+      </el-form>
+    </GDrawerPanel>
+    <GDrawerPanel
+      v-model:visible="visible1"
+      title="Detail"
+      bodyColor="grey"
+      :loading="loading1"
+      @update:model-value="closeDrawer1"
+    >
+      <el-form :model="form" label-width="120px">
+        <h1 :style="{ margin: '20px' }">风格2:Card</h1>
+        <GSectionGroup title="CARD" type="card">
+          <el-form-item label="Activity form :"> Test Data </el-form-item>
+        </GSectionGroup>
+        <GSectionGroup title="CARD" type="card">
+          <el-form-item label="Activity form :"> Test Data </el-form-item>
+        </GSectionGroup>
+      </el-form>
+    </GDrawerPanel>
   </div>
 </template>
 
 <script setup lang="ts">
 import { h } from 'vue';
-import { GTable, GTableSetting } from 'packages';
+import { GTable, GTableSetting, GDrawerPanel, GSectionGroup } from 'packages';
 import { GTableStatus } from 'packages/TableStatus';
 import { ElTooltip } from 'element-plus';
+import useDrawer from '@/hooks/useDrawer';
 
 const sourceData = ref<Array<any>>([]); // 源数据缓存
 const tableData = ref<Array<any>>([]);
@@ -128,9 +182,7 @@ const columns: any = ref([
       return h(
         GTableStatus,
         {
-          statusData: {
-            status: props.row.status + 1,
-          },
+          status: props.row.status + 1,
         },
         {
           default: () => (props.row.status ? 'Open' : 'Closed'),
@@ -217,15 +269,27 @@ const columns: any = ref([
     width: 100,
     show: true,
     hide(attr: any, column: any) { return column.show === false},
+    fixed: 'right',
     cellRenderer(props: any) {
       return h('div', { class: 'action-btn' }, [
         h('i', { class: 'iconfont icon-ellipsis' }),
-        h('i', { class: 'iconfont icon-setting' }),
-        h('i', { class: 'iconfont icon-search' }),
+        h('i', {
+          class: 'iconfont icon-setting',
+          onClick: () => {
+            handleOpen();
+          },
+        }),
+        h('i', {
+          class: 'iconfont icon-search',
+          onClick: () => {
+            openDrawer1();
+          },
+        }),
       ]);
     },
   },
 ]);
+
 const resetTableData = () => {
   loading.value = true;
   setTimeout(() => {
@@ -258,6 +322,27 @@ setTimeout(() => {
   loading.value = false;
   tableData.value = sourceData.value.slice(0, pagination.pageSize);
 }, 1500);
+
+const { loading: editLoading, visible, openDrawer, closeDrawer, openLoading, closeLoading } = useDrawer();
+const { loading: loading1, visible: visible1, openDrawer: openDrawer1, closeDrawer: closeDrawer1 } = useDrawer();
+const form = reactive({
+  name: '',
+  region: '',
+  name1: '',
+  region1: '',
+  desc: '',
+  desc1: '',
+});
+const handleOpen = () => {
+  openDrawer();
+  openLoading();
+  setTimeout(() => {
+    closeLoading();
+  }, 1200);
+};
+const handleSubmit = () => {
+  console.log('submit');
+};
 </script>
 
 <style lang="scss" scoped>

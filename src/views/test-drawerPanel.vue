@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { GDrawerPanel, GSectionGroup } from "packages";
+import { GSectionContainer } from "packages/SectionContainer/index";
 import useDrawer from "@/hooks/useDrawer";
 
 const {
@@ -47,6 +48,7 @@ const handleSubmit = () => {
       @update:model-value="closeDrawer"
       @submit="handleSubmit"
     >
+      <GSectionContainer>
       <el-form :model="form" label-width="120px">
         <h1 :style="{ margin: '20px' }">风格1: 默认</h1>
         <GSectionGroup title="BASIC">
@@ -80,6 +82,7 @@ const handleSubmit = () => {
           </el-form-item>
         </GSectionGroup>
       </el-form>
+      </GSectionContainer>
     </GDrawerPanel>
     <GDrawerPanel
       v-model:visible="visible1"
