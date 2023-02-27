@@ -13,13 +13,15 @@ import 'element-plus/es/components/radio/style/css';
 import 'element-plus/es/components/switch/style/css';
 import './index.scss';
 
+import { PropType, h } from 'vue';
 import { cloneDeep } from 'lodash';
 import type { FormInstance } from 'element-plus';
 import * as EasyFormType from './type';
-import { PropType, h } from 'vue';
+import EasyRadiosOrCheckboxs from '../EasyRadiosOrCheckboxs';
 
 const easyForm = defineComponent({
   name: 'GEasyForm',
+  components: { EasyRadiosOrCheckboxs },
   props: {
     /** 用于渲染页面数据 */
     fieldList: {
@@ -125,19 +127,13 @@ const easyForm = defineComponent({
       switch (type) {
         case 'checkbox':
         case 'radio': {
-          const currentElGroups = resolveComponent(`el-${type}-group`);
-          const currentEl = resolveComponent(`el-${type}`);
           return (
-            <currentElGroups v-model={model.value[inputItem.name]} {...inputItem.groupProps}>
-              {groupDatas?.map((groupItem) => {
-                return (
-                  <currentEl label={groupItem[inputItem.groupItemProps?.valueKey || 'value']}>
-                    {groupItem[inputItem.groupItemProps?.labelkey || 'label']}
-                    {inputItemTooltip(groupItem.tooltip)}
-                  </currentEl>
-                );
-              })}
-            </currentElGroups>
+            <EasyRadiosOrCheckboxs
+              type={type}
+              v-model={model.value[inputItem.name]}
+              lists={groupDatas}
+              {...inputItem.inputItemProps}
+            ></EasyRadiosOrCheckboxs>
           );
         }
         case 'select':
@@ -202,7 +198,14 @@ const easyForm = defineComponent({
       return <el-form-item>{slots.buttons?.({ model, formRef }) || defaultButtons}</el-form-item>;
     }
     return () => (
-      <el-form ref={formRef} label-suffix=":" model={model.value} scroll-to-error class="g-easy-form" {...formPropsData.value}>
+      <el-form
+        ref={formRef}
+        label-suffix=":"
+        model={model.value}
+        scroll-to-error
+        class="g-easy-form"
+        {...formPropsData.value}
+      >
         {renderFormItem(props.fieldList, formPropsData.value)}
         {renderFormButtons()}
       </el-form>
