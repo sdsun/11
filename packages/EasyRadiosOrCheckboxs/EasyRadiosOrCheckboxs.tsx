@@ -38,11 +38,12 @@ const easyRadiosOrCheckboxs = defineComponent({
       return isString ? item[text as string] : (text as Function)?.(item);
     }
     function renderToolTip(item: any) {
-      return (
+      let tooltipContent = renderText(item, 'tooltip');
+      return tooltipContent ? (
         <el-tooltip effect="dark" placement="bottom" content={renderText(item, 'tooltip')}>
           <span class="g-form-tooltip">i</span>
         </el-tooltip>
-      );
+      ) : null;
     }
     function renderItem() {
       return props.lists.map((item: any) => {
