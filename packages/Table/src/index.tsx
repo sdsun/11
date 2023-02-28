@@ -90,6 +90,7 @@ export default defineComponent({
     if (unref(countable)) {
       unref(columns).unshift({
         width: 60,
+        fixed: 'left',
         headerRenderer(params: any) {
           return countable ? <div class="g-table-search">No.</div> : <div></div>;
         },
@@ -372,15 +373,24 @@ export default defineComponent({
       /** @description Reset table columns filter value */
       resetFilter,
     });
-
+    const count = ref(0);
     let renderTable = () => {
       const dbClickCopy = (row: any, column: any, cell: any) => {
+        count.value++;
         if (!unref(copyable) || !row[column.property]) return;
         copy(row[column.property]);
         ElMessage.success("Cell Copied!");
       };
+      const onSelectionChange = (v:[]) => {
+        count.value = v.length
+        console.log(v)
+
+      }
       return (
         <>
+          <div className={`ttt`}>
+            { count.value }
+          </div>
           <ElTable
             class={unref(copyable) ? 'g-table g-table-copyable' : 'g-table'}
             {...props}
@@ -388,6 +398,7 @@ export default defineComponent({
             headerRowClassName={`g-table-header${props.headerRowClassName ? ' ' + props.headerRowClassName : ''}`}
             ref={`TableRef${props.key}`}
             onCellDblclick={dbClickCopy}
+            onSelectionChange={onSelectionChange}
           >
             {{
               // default: () => unref(columns).filter(item => (item as any).show).map(renderColumns),

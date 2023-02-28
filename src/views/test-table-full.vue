@@ -20,6 +20,22 @@
       <template #tableRight>
         <GTableSetting v-model="columns" :append-to-body="false" />
       </template>
+      <template #action="scope">
+        <el-dropdown>
+    <span class="el-dropdown-link">
+      Dropdown List
+    </span>
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item>Action 1</el-dropdown-item>
+        <el-dropdown-item>Action 2</el-dropdown-item>
+        <el-dropdown-item>Action 3</el-dropdown-item>
+        <el-dropdown-item disabled>Action 4</el-dropdown-item>
+        <el-dropdown-item divided>Action 5</el-dropdown-item>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
+      </template>
     </GTable>
     <GDrawerPanel
       v-model:visible="visible"
@@ -83,6 +99,8 @@ import { GTable, GTableSetting, GDrawerPanel, GSectionGroup, GTableButton } from
 import { GTableStatus } from 'packages/TableStatus';
 import { ElTooltip } from 'element-plus';
 import useDrawer from '@/hooks/useDrawer';
+import {ElDropdown} from 'element-plus';
+import { column } from 'element-plus/es/components/table-v2/src/common';
 
 const sourceData = ref<Array<any>>([]); // 源数据缓存
 const tableData = ref<Array<any>>([]);
@@ -219,7 +237,7 @@ const columns: any = ref([
         h(
           ElTooltip,
           {
-            content: 'Total: 500（temp）',
+            content: 'Total: 500（temp）<br />Total: 500（temp）',
           },
           {
             default: () => h('i', { class: 'iconfont icon-sum' }),
@@ -286,38 +304,43 @@ const columns: any = ref([
   },
   {
     label: 'Action',
+    prop: 'action',
     width: 140,
     show: true,
     hide(attr: any, column: any) {
       return column.show === false;
     },
     fixed: 'right',
-    cellRenderer(props: any) {
-      return h('div', { class: 'action-btn' }, [
-        h('i', {
-          class: 'iconfont icon-setting',
-          onClick: () => {
-            handleOpen();
-          },
-        }),
-        h('i', {
-          class: 'iconfont icon-setting',
-          onClick: () => {
-            handleOpen();
-          },
-        }),
-        h('i', {
-          class: 'iconfont icon-search',
-          onClick: () => {
-            openDrawer1();
-          },
-        }),
-        h('i', { class: 'iconfont icon-ellipsis' }),
-      ]);
-    },
+    slot: 'action'
+    // cellRenderer(props: any) {
+    //   return h('div', { class: 'action-btn' }, [
+    //     h('i', {
+    //       class: 'iconfont icon-setting',
+    //       onClick: () => {
+    //         handleOpen();
+    //       },
+    //     }),
+    //     h('i', {
+    //       class: 'iconfont icon-setting',
+    //       onClick: () => {
+    //         handleOpen();
+    //       },
+    //     }),
+    //     h('i', {
+    //       class: 'iconfont icon-search',
+    //       onClick: () => {
+    //         openDrawer1();
+    //       },
+    //     }),
+    //     h(ElDropdown),
+    //   ]);
+    // },
   },
 ]);
-
+const handleClick = (row) => {
+  alert(row.code)
+  // console.log(scope.row['code'])
+}
 const resetTableData = () => {
   loading.value = true;
   setTimeout(() => {
