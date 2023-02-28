@@ -9,14 +9,14 @@
     @submit.prevent
   >
     <template v-for="(item, index) in displayedFilterItems" :key="index">
-      <div v-if="(!isLarge && index % 3 === 1) || (isLarge && index % 4 === 1)"></div>
+      <div v-if="index % 3 === 1"></div>
       <div class="item-label">{{ item.label }}</div>
       <el-form-item :prop="item.options.attributeName">
         <el-select
           v-if="item.type === 'select'"
           v-model="model[item.options.attributeName]"
           :placeholder="item.options.placeholder ?? ' '"
-          multiple
+          :multiple="item.options.multiple"
           collapse-tags
           collapse-tags-tooltip
           filterable
@@ -34,7 +34,7 @@
           v-model="model[item.options.attributeName]"
           :options="item.options.selectOptions"
           :placeholder="item.options.placeholder ?? ' '"
-          multiple
+          :multiple="item.options.multiple"
           collapse-tags
           collapse-tags-tooltip
           filterable
@@ -57,6 +57,7 @@
           :type="item.options.dateType"
           :value-format="dateValueFormat(item.options?.dateType ?? 'date')"
           :placeholder="item.options.placeholder ?? ''"
+          :unlink-panels="true"
           clearable
         />
         <el-radio-group v-else-if="item.type === 'radio'" v-model="model[item.options.attributeName]">
@@ -80,10 +81,10 @@
           clearable
         />
       </el-form-item>
-      <div v-if="(!isLarge && index % 3 === 1) || (isLarge && index % 4 === 1) || (isLarge && index % 4 === 2)"></div>
+      <div v-if="index % 3 === 1"></div>
     </template>
     <el-form-item class="last-item" label-width="0">
-      <el-button type="primary" link @click="toggleExpand"
+      <el-button v-if="props.filterItems.length > props.rowNum" type="primary" link @click="toggleExpand"
         >{{ toggleName }}<i class="iconfont" :class="toggleIcon"></i
       ></el-button>
       <el-button type="default" @click="handleReset">Reset</el-button>
@@ -120,7 +121,6 @@ const emit = defineEmits<FilterAreaEmits>();
 
 const formRef = ref<FormInstance>();
 
-const isLarge = ref(window.screen.width >= 1900);
 const model = reactive<FilterModelValue>(props.modelValue);
 watch(model, (newVal) => {
   emit('update:modelvalue', newVal);
@@ -138,7 +138,7 @@ const toggleExpand = () => {
 };
 
 const displayedFilterItems = computed<ScalableFilters>(() => {
-  return isExpanded.value ? props.filterItems : props.filterItems.slice(0, isLarge.value ? 7 : 5);
+  return isExpanded.value ? props.filterItems : props.filterItems.slice(0, props.rowNum);
 });
 
 const dateValueFormat = (type: FilterDateType) => {
@@ -156,8 +156,9 @@ const handleSearch = () => {
 
 <style lang="scss" scoped>
 .scalable-filter-area {
+  --el-color-primary: #336ffd;
   display: grid;
-  grid-template-columns: auto 260px 1fr auto 260px 1fr auto 260px;
+  grid-template-columns: auto 280px 1fr auto 280px 1fr auto 280px;
   grid-gap: 10px;
   .item-label {
     display: flex;
@@ -212,6 +213,22 @@ const handleSearch = () => {
         height: 30px;
       }
     }
+    .el-select-v2 {
+      .el-select-v2__suffix {
+        right: 10px;
+      }
+    }
+    .el-cascader {
+      .el-cascader__tags {
+        .el-tag {
+          max-width: 60%;
+        }
+        .el-cascader__search-input {
+          width: 10px;
+          min-width: unset;
+        }
+      }
+    }
   }
   :deep(.last-item) {
     grid-column-end: -1;
@@ -219,11 +236,6 @@ const handleSearch = () => {
     .el-form-item__content {
       justify-content: flex-end;
     }
-  }
-}
-@media screen and (min-width: 1900px) {
-  .scalable-filter-area {
-    grid-template-columns: auto 270px 1fr auto 270px 1fr auto 270px 1fr auto 270px;
   }
 }
 </style>

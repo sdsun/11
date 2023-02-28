@@ -27,6 +27,7 @@ const activeTab = ref(props.modelValue);
 
 <style lang="scss" scoped>
 .el-tabs {
+  --el-color-primary: #336ffd;
   height: 100%;
   :deep(.el-tabs__header) {
     margin: 0;
@@ -38,11 +39,15 @@ const activeTab = ref(props.modelValue);
     .el-tabs__item.is-active {
       color: #262626;
     }
+    .el-tabs__active-bar {
+      height: 1px;
+    }
   }
   :deep(.el-tabs__content) {
     height: calc(100% - 40px);
     .el-tab-pane {
       height: 100%;
+      overflow: auto;
     }
   }
 }
