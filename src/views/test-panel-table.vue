@@ -219,7 +219,7 @@ const filterItems = ref<ScalableFilters>([
     type: 'radio',
     label: 'long-long-long-long-long-long-long-long',
     options: {
-      attributeName: 'test6',
+      attributeName: 'test8',
       radioOptions: [
         {
           value: '1',
@@ -236,17 +236,17 @@ const filterItems = ref<ScalableFilters>([
     type: 'checkbox',
     label: 'long-long-long-long-long-long-long-long',
     options: {
-      attributeName: 'test6',
+      attributeName: 'test9',
       checkboxOptions: [
         {
           label: 'test1',
           value: '1',
-          name: 'test6',
+          name: 'test9',
         },
         {
           label: 'test2',
           value: '2',
-          name: 'test6',
+          name: 'test9',
         },
       ],
     },

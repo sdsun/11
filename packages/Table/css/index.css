@@ -75,6 +75,7 @@
 .g-table-content {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 .g-table-content__left,
 .g-table-content__right {

@@ -14,3 +14,4 @@ export * from './ScalableFilterArea';
 export * from './PanelTable';
 export * from './PanelTabs';
 export * from './SectionContainer';
+export * from './TableButton';
