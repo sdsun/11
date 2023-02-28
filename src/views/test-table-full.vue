@@ -237,10 +237,11 @@ const columns: any = ref([
         h(
           ElTooltip,
           {
-            content: 'Total: 500（temp）<br />Total: 500（temp）',
+            // content: 'Total: 500（temp）',
           },
           {
             default: () => h('i', { class: 'iconfont icon-sum' }),
+            content: () => h('div', { innerHTML: 'Total: 500（temp）<br />Total: 500（temp）' }),
           },
         ),
       ]);
