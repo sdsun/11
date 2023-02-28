@@ -134,7 +134,7 @@ export default defineComponent({
     const loadingBackground = computed(() => {
       if (!unref(loading)) return;
       return {
-        'element-loading-background': 'rgba(0, 0, 0, 0.45)',
+        'element-loading-background': 'rgba(255, 255, 255, 0.45)',
       };
     });
 
@@ -375,11 +375,9 @@ export default defineComponent({
 
     let renderTable = () => {
       const dbClickCopy = (row: any, column: any, cell: any) => {
-        if (!unref(copyable)) return;
+        if (!unref(copyable) || !row[column.property]) return;
         copy(row[column.property]);
-        ElMessage({
-          message: 'Cell Copied!',
-        });
+        ElMessage.success("Cell Copied!");
       };
       return (
         <>
@@ -419,11 +417,12 @@ export default defineComponent({
         </>
       );
     };
-    const renderFullScreen = useFullScreen(instance, props, fullscreen);
+    const {renderFullScreen, fullscreenStatus} = useFullScreen(fullscreen);
     return () => (
+      <>
       <div
         ref={`g-table-container__${props.key}`}
-        class="g-table-container"
+        class={`g-table-container ${unref(fullscreenStatus) ? 'g-table-fullscreen_t' : ''}`}
         style="width:100%"
         v-loading={unref(loading)}
         {...unref(loadingBackground)}
@@ -436,8 +435,9 @@ export default defineComponent({
             {renderFullScreen()}
           </div>
         </div>
-        {renderTable()}
+        { renderTable()}
       </div>
+      </>
     );
   },
 });

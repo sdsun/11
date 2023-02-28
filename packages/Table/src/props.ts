@@ -46,7 +46,7 @@ export default {
     type: Object,
     default: {
       total: 0,
-      pageSize: 5,
+      pageSize: 10,
       align: 'right',
       background: false,
       pageSizes: [5, 10, 15, 20],

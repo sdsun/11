@@ -1,6 +1,25 @@
 .g-table-container {
   background: #fff;
   overflow-y: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.g-table-fullscreen_t {
+  position: fixed;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.g-table-container .el-table{
+  flex: 1;
 }
 .g-table-header th.el-table__cell {
   background-color: rgb(250, 250, 250);
@@ -75,7 +94,7 @@
 .g-table-content {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin: 10px 0 20px 0;
 }
 .g-table-content__left,
 .g-table-content__right {

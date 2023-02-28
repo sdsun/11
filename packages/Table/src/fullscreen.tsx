@@ -1,11 +1,10 @@
 import screenfull from 'screenfull';
-import { ComponentInternalInstance } from 'vue';
-export const useFullScreen = (instance: ComponentInternalInstance | null, props: any, fullscreen: any) => {
+export const useFullScreen = (fullscreen: any) => {
   const fullscreenStatus = ref(false); // 判断当前是否全屏
   const renderFullScreen = (): HTMLElement | undefined => {
     return (
       unref(fullscreen) && (
-        <div class="g-table-fullscreen">
+        <div class="g-table-fullscreen" style={{ marginLeft: '10px' }}>
           <a href="javascript:void(0)" onClick={handleFullScreen}>
             <i className={`iconfont icon-fullscreen${unref(fullscreenStatus) ? '-exit' : ''}`}></i>
           </a>
@@ -15,12 +14,13 @@ export const useFullScreen = (instance: ComponentInternalInstance | null, props:
   };
   const handleFullScreen = () => {
     nextTick(() => {
-      const tableEle: HTMLElement = instance?.proxy?.$refs[`g-table-container__${props.key}`] as HTMLElement;
-      if (screenfull.isEnabled && tableEle) {
+      if (screenfull.isEnabled) {
+        console.log(fullscreenStatus)
+        console.log('u'+unref(fullscreenStatus))
         if (unref(fullscreenStatus)) {
           screenfull.exit();
         } else {
-          screenfull.request(tableEle, { navigationUI: 'hide' });
+          screenfull.request();
         }
       }
     });
@@ -29,5 +29,5 @@ export const useFullScreen = (instance: ComponentInternalInstance | null, props:
     screenfull.on('change', () => {
       fullscreenStatus.value = !fullscreenStatus.value;
     });
-  return renderFullScreen;
+  return {renderFullScreen, fullscreenStatus};
 };

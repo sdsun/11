@@ -126,7 +126,7 @@ for (let i = 0; i < 100; i++) {
   sourceData.value.push({
     code: `HPKTEM20220000${i}`,
     name: `HPK SHOP ${i}`,
-    dimension: '500',
+    dimension: '500.00',
     status: Number(i % 2 === 0),
     rStatus: Number(Math.floor(Math.random() * 10) % 2 === 0),
     country: countryData.value[i % countryData.value.length].label,
@@ -138,7 +138,7 @@ const columns: any = ref([
   {
     label: 'Shop Code',
     prop: 'code',
-    width: 400,
+    width: 220,
     sortable: true,
     show: true,
     hide(attr: any, column: any) {
@@ -149,7 +149,7 @@ const columns: any = ref([
     label: 'Shop Name',
     prop: 'name',
     show: true,
-    width: 400,
+    width: 280,
     hide(attr: any, column: any) {
       return column.show === false;
     },
@@ -161,7 +161,7 @@ const columns: any = ref([
     hide(attr: any, column: any) {
       return column.show === false;
     },
-    width: 200,
+    width: 160,
     cellRenderer(props: any) {
       return h(
         'div',
@@ -183,7 +183,7 @@ const columns: any = ref([
     label: 'Shop Status',
     prop: 'status',
     show: true,
-    width: 200,
+    width: 120,
     hide(attr: any, column: any) {
       return column.show === false;
     },
@@ -203,16 +203,18 @@ const columns: any = ref([
     },
   },
   {
-    label: 'Shop Dimension',
+    label: 'Rp',
     prop: 'dimension',
     show: true,
-    width: 400,
+    width: 120,
+    align: 'right',
     hide(attr: any, column: any) {
       return column.show === false;
     },
     headerRenderer(props: any) {
-      console.log(props);
-      return h('div', {}, [
+      return h('div', {
+        style: { textAlign: "right" }
+      }, [
         props.column.label,
         h(
           ElTooltip,
@@ -229,7 +231,7 @@ const columns: any = ref([
   {
     label: 'Country',
     prop: 'country',
-    width: 400,
+    width: 120,
     show: true,
     hide(attr: any, column: any) {
       return column.show === false;
@@ -258,8 +260,8 @@ const columns: any = ref([
   {
     label: 'Address',
     prop: 'address',
-    width: 400,
     show: true,
+    width: 300,
     hide(attr: any, column: any) {
       return column.show === false;
     },
@@ -284,7 +286,7 @@ const columns: any = ref([
   },
   {
     label: 'Action',
-    width: 100,
+    width: 140,
     show: true,
     hide(attr: any, column: any) {
       return column.show === false;
@@ -292,7 +294,12 @@ const columns: any = ref([
     fixed: 'right',
     cellRenderer(props: any) {
       return h('div', { class: 'action-btn' }, [
-        h('i', { class: 'iconfont icon-ellipsis' }),
+        h('i', {
+          class: 'iconfont icon-setting',
+          onClick: () => {
+            handleOpen();
+          },
+        }),
         h('i', {
           class: 'iconfont icon-setting',
           onClick: () => {
@@ -305,6 +312,7 @@ const columns: any = ref([
             openDrawer1();
           },
         }),
+        h('i', { class: 'iconfont icon-ellipsis' }),
       ]);
     },
   },
@@ -321,7 +329,7 @@ const resetTableData = () => {
 
 const loading = ref(true);
 const pagination = reactive({
-  pageSize: 5,
+  pageSize: 15,
   currentPage: 1,
   background: true,
   total: sourceData.value.length,
@@ -405,6 +413,7 @@ const options = reactive([
 
 <style lang="scss" scoped>
 .full {
+  height: 100%;
   ::v-deep .action-btn {
     display: flex;
     justify-content: space-between;
