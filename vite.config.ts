@@ -26,16 +26,16 @@ export default defineConfig({
       },
     ],
   },
-  build: {
-    rollupOptions: {
-      external: ['lodash'],
-      output: {
-        paths: {
-          lodash: 'https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js',
-        },
-      },
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     external: ['lodash'],
+  //     output: {
+  //       paths: {
+  //         lodash: 'https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js',
+  //       },
+  //     },
+  //   },
+  // },
   plugins: [
     vue(),
     AutoImport({

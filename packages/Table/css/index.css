@@ -17,6 +17,7 @@
   z-index: 999;
   padding: 20px;
   box-sizing: border-box;
+  transition: all .5s;
 }
 .g-table-container .el-table{
   flex: 1;
@@ -103,4 +104,16 @@
 .g-table-content__right {
   text-align: right;
   align-items: center;
+}
+
+.g-table-container .el-alert--info.is-light{
+  background: #e6f7ff;
+  border: 1px solid #91d5ff;
+  color: #666;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+.g-table-container .el-alert--info.is-light i{
+  color: #336ffd;
 }

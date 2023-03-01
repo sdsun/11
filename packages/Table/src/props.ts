@@ -74,5 +74,9 @@ export default {
     type: Boolean,
     default: false,
   },
+  showSelectTotal: {
+    type: Boolean,
+    default: true
+  },
   ...defaultProps,
 };

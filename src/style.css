@@ -1,4 +1,4 @@
-@import url('//at.alicdn.com/t/c/font_3898775_l6tjwb95rm.css');
+@import url('//at.alicdn.com/t/c/font_3898775_w4ub34212y.css');
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -15,9 +15,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-*{
-  outline: none;
-}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -37,6 +35,7 @@ body {
 * {
   margin: 0;
   padding: 0;
+  outline: 0;
 }
 ul {
   list-style: none;

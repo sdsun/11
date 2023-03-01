@@ -15,26 +15,35 @@
       :pagination="pagination"
       @page-size-change="handlePageSizeChange"
       @page-current-change="handleCurrentChange"
+      @change-columns="handleChangeColumns"
     >
       <template #tableLeft><GTableButton :options="options" /></template>
-      <template #tableRight>
-        <GTableSetting v-model="columns" :append-to-body="false" />
-      </template>
-      <template #action="scope">
-        <el-dropdown>
-    <span class="el-dropdown-link">
-      Dropdown List
-    </span>
-    <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item>Action 1</el-dropdown-item>
-        <el-dropdown-item>Action 2</el-dropdown-item>
-        <el-dropdown-item>Action 3</el-dropdown-item>
-        <el-dropdown-item disabled>Action 4</el-dropdown-item>
-        <el-dropdown-item divided>Action 5</el-dropdown-item>
-      </el-dropdown-menu>
-    </template>
-  </el-dropdown>
+      <template #action>
+        <div class="action-btn">
+          <!-- EDIT -->
+          <i class="iconfont icon-edit" @click="handleOpen" />
+          <!-- DETAIL -->
+          <i class="iconfont icon-details" @click="openDrawer1" />
+          <!-- DELETE -->
+          <el-popconfirm title="Are you sure to delete this?">
+            <template #reference>
+              <i class="iconfont icon-del" />
+            </template>
+          </el-popconfirm>
+          <!-- MORE -->
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              ···
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>Action 1</el-dropdown-item>
+                <el-dropdown-item>Action 2</el-dropdown-item>
+                <el-dropdown-item>Action 3</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </template>
     </GTable>
     <GDrawerPanel
@@ -99,8 +108,6 @@ import { GTable, GTableSetting, GDrawerPanel, GSectionGroup, GTableButton } from
 import { GTableStatus } from 'packages/TableStatus';
 import { ElTooltip } from 'element-plus';
 import useDrawer from '@/hooks/useDrawer';
-import {ElDropdown} from 'element-plus';
-import { column } from 'element-plus/es/components/table-v2/src/common';
 
 const sourceData = ref<Array<any>>([]); // 源数据缓存
 const tableData = ref<Array<any>>([]);
@@ -156,7 +163,7 @@ const columns: any = ref([
   {
     label: 'Shop Code',
     prop: 'code',
-    width: 220,
+    width: 240,
     sortable: true,
     show: true,
     hide(attr: any, column: any) {
@@ -167,7 +174,7 @@ const columns: any = ref([
     label: 'Shop Name',
     prop: 'name',
     show: true,
-    width: 280,
+    width: 320,
     hide(attr: any, column: any) {
       return column.show === false;
     },
@@ -224,7 +231,7 @@ const columns: any = ref([
     label: 'Rp',
     prop: 'dimension',
     show: true,
-    width: 120,
+    width: 140,
     align: 'right',
     hide(attr: any, column: any) {
       return column.show === false;
@@ -236,12 +243,10 @@ const columns: any = ref([
         props.column.label,
         h(
           ElTooltip,
-          {
-            // content: 'Total: 500（temp）',
-          },
+          null,
           {
             default: () => h('i', { class: 'iconfont icon-sum' }),
-            content: () => h('div', { innerHTML: 'Total: 500（temp）<br />Total: 500（temp）' }),
+            content: () => h('div', { innerHTML: 'Current page total: 500.00 <br />All page total: 5000.00' }),
           },
         ),
       ]);
@@ -250,7 +255,7 @@ const columns: any = ref([
   {
     label: 'Country',
     prop: 'country',
-    width: 120,
+    width: 140,
     show: true,
     hide(attr: any, column: any) {
       return column.show === false;
@@ -280,7 +285,7 @@ const columns: any = ref([
     label: 'Address',
     prop: 'address',
     show: true,
-    width: 300,
+    width: 320,
     hide(attr: any, column: any) {
       return column.show === false;
     },
@@ -305,7 +310,6 @@ const columns: any = ref([
   },
   {
     label: 'Action',
-    prop: 'action',
     width: 140,
     show: true,
     hide(attr: any, column: any) {
@@ -313,35 +317,9 @@ const columns: any = ref([
     },
     fixed: 'right',
     slot: 'action'
-    // cellRenderer(props: any) {
-    //   return h('div', { class: 'action-btn' }, [
-    //     h('i', {
-    //       class: 'iconfont icon-setting',
-    //       onClick: () => {
-    //         handleOpen();
-    //       },
-    //     }),
-    //     h('i', {
-    //       class: 'iconfont icon-setting',
-    //       onClick: () => {
-    //         handleOpen();
-    //       },
-    //     }),
-    //     h('i', {
-    //       class: 'iconfont icon-search',
-    //       onClick: () => {
-    //         openDrawer1();
-    //       },
-    //     }),
-    //     h(ElDropdown),
-    //   ]);
-    // },
   },
 ]);
-const handleClick = (row) => {
-  alert(row.code)
-  // console.log(scope.row['code'])
-}
+
 const resetTableData = () => {
   loading.value = true;
   setTimeout(() => {
@@ -353,7 +331,7 @@ const resetTableData = () => {
 
 const loading = ref(true);
 const pagination = reactive({
-  pageSize: 15,
+  pageSize: 10,
   currentPage: 1,
   background: true,
   total: sourceData.value.length,
@@ -369,7 +347,13 @@ const handlePageSizeChange = (size: number) => {
 const handleCurrentChange = (current: number) => {
   tableData.value = sourceData.value.slice((current - 1) * pagination.pageSize, current * pagination.pageSize);
 };
-
+const handleChangeColumns = (v:any[], t?:boolean) => {
+  columns.value = v
+  t && handleSetColumns(v)
+}
+const handleSetColumns = (v:any[]) => {
+  alert(`调用后端配置列${JSON.stringify(v)}`)
+} 
 setTimeout(() => {
   loading.value = false;
   tableData.value = sourceData.value.slice(0, pagination.pageSize);
@@ -399,35 +383,35 @@ const handleSubmit = () => {
 const options = reactive([
   {
     type: 'new',
-    label: '新建',
+    label: 'New',
     icon: '',
     iconOpen: false,
     iconName: '新建',
   },
   {
     type: 'upload',
-    label: '上传',
+    label: 'Upload',
     icon: 'icon-shangchuan',
     iconOpen: false,
     iconName: '上传',
   },
   {
     type: 'download',
-    label: '下载',
+    label: 'Download',
     icon: 'icon-xiazai',
     iconOpen: false,
     iconName: '下载',
   },
   {
     type: 'formwork',
-    label: '模板下载',
+    label: 'Template',
     icon: 'icon-xiazai',
     iconOpen: false,
     iconName: '模板下载',
   },
   {
     type: '2',
-    label: '测试1',
+    label: 'Select All',
     icon: '',
     iconOpen: false,
     iconName: '',

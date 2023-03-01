@@ -8,7 +8,7 @@ import 'element-plus/es/components/checkbox-group/style/css';
 import 'element-plus/es/components/checkbox/style/css';
 import 'element-plus/es/components/message/style/css';
 import 'element-plus/es/components/tooltip/style/css';
-// import 'element-plus/es/components/alert/style/css';
+import 'element-plus/es/components/alert/style/css';
 import '../css/index.css';
 import {
   ref,
@@ -33,15 +33,16 @@ import {
   ElCheckboxGroup,
   ElCheckbox,
   ElTooltip,
-  // ElAlert,
+  ElAlert
 } from 'element-plus';
+import ColumnsSetting from './Setting.vue'
 import { GTableProps } from '../types';
 import { useFullScreen } from './fullscreen';
 
 export default defineComponent({
   name: 'GTable',
   props,
-  emits: ['page-size-change', 'page-current-change', 'pageCurrentChange', 'pageSizeChange', 'search', 'reset'],
+  emits: ['page-size-change', 'page-current-change', 'pageCurrentChange', 'pageSizeChange', 'search', 'reset', 'changeColumns'],
   setup(props, { slots, attrs, emit, expose }) {
     const instance = getCurrentInstance()!;
 
@@ -102,7 +103,7 @@ export default defineComponent({
     if (unref(checkable)) {
       unref(columns).unshift({
         type: 'selection',
-        width: 55,
+        width: 50
       });
     }
     // 增加内部用于计数的方法__valueIdx
@@ -135,7 +136,7 @@ export default defineComponent({
     const loadingBackground = computed(() => {
       if (!unref(loading)) return;
       return {
-        'element-loading-background': 'rgba(255, 255, 255, 0.45)',
+        'element-loading-background': 'rgba(255, 255, 255, 0.8)',
       };
     });
 
@@ -280,7 +281,6 @@ export default defineComponent({
           </ElTooltip>
         );
       };
-
       const defaultSlots = {
         default: (scope: any) => {
           if (cellRenderer) {
@@ -365,6 +365,8 @@ export default defineComponent({
       );
     };
 
+    const selectTotal = ref(0)
+
     expose({
       /** @description Get Table Instance */
       getTableRef,
@@ -373,24 +375,24 @@ export default defineComponent({
       /** @description Reset table columns filter value */
       resetFilter,
     });
-    const count = ref(0);
+
     let renderTable = () => {
       const dbClickCopy = (row: any, column: any, cell: any) => {
-        count.value++;
         if (!unref(copyable) || !row[column.property]) return;
         copy(row[column.property]);
         ElMessage.success("Cell Copied!");
       };
-      const onSelectionChange = (v:[]) => {
-        count.value = v.length
-        console.log(v)
-
+      const handleSelectChange = (v:[]) => {
+        selectTotal.value = v.length
       }
       return (
         <>
-          <div className={`ttt`}>
-            { count.value }
-          </div>
+          {
+            props.showSelectTotal && selectTotal.value > 0 && <ElAlert
+              title={ `Selected ${selectTotal.value} term` }
+              type="info"
+              show-icon />
+          }
           <ElTable
             class={unref(copyable) ? 'g-table g-table-copyable' : 'g-table'}
             {...props}
@@ -398,10 +400,9 @@ export default defineComponent({
             headerRowClassName={`g-table-header${props.headerRowClassName ? ' ' + props.headerRowClassName : ''}`}
             ref={`TableRef${props.key}`}
             onCellDblclick={dbClickCopy}
-            onSelectionChange={onSelectionChange}
+            onSelectionChange={handleSelectChange}
           >
             {{
-              // default: () => unref(columns).filter(item => (item as any).show).map(renderColumns),
               default: () => unref(columns).map(renderColumns),
               append: () => slots.append && slots.append(),
               empty: () => slots.empty && slots.empty(),
@@ -429,6 +430,14 @@ export default defineComponent({
       );
     };
     const {renderFullScreen, fullscreenStatus} = useFullScreen(fullscreen);
+    const renderColumnsSetting = () => {
+      const handleUpdate = (v:any[], t?:boolean) => {
+        emit('changeColumns', v, t)
+      }
+      return (
+        <ColumnsSetting modelValue={props.columns} onUpdate={handleUpdate} />
+      )
+    }
     return () => (
       <>
       <div
@@ -442,7 +451,7 @@ export default defineComponent({
         <div class="g-table-content">
           <div class="g-table-content__left">{slots.tableLeft && slots.tableLeft()}</div>
           <div class="g-table-content__right">
-            {slots.tableRight && slots.tableRight()}
+            {renderColumnsSetting()}
             {renderFullScreen()}
           </div>
         </div>

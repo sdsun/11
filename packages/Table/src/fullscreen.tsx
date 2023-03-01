@@ -15,8 +15,6 @@ export const useFullScreen = (fullscreen: any) => {
   const handleFullScreen = () => {
     nextTick(() => {
       if (screenfull.isEnabled) {
-        console.log(fullscreenStatus)
-        console.log('u'+unref(fullscreenStatus))
         if (unref(fullscreenStatus)) {
           screenfull.exit();
         } else {
