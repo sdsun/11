@@ -2,11 +2,13 @@
   <div class="full">
     <GTable
       ref="table"
+      row-key="code"
       fullscreen
       border
       countable
       copyable
       checkable
+      isCheckMemory
       showOverflowTooltip
       headerAlign="left"
       :loading="loading"
@@ -16,6 +18,7 @@
       @page-size-change="handlePageSizeChange"
       @page-current-change="handleCurrentChange"
       @change-columns="handleChangeColumns"
+      @selection-change="handleSelectionChange"
     >
       <template #tableLeft><GTableButton :options="options" /></template>
       <template #action>
@@ -104,9 +107,9 @@
 
 <script setup lang="ts">
 import { h } from 'vue';
-import { GTable, GTableSetting, GDrawerPanel, GSectionGroup, GTableButton } from 'packages';
+import { GTable, GDrawerPanel, GSectionGroup, GTableButton } from 'packages';
 import { GTableStatus } from 'packages/TableStatus';
-import { ElTooltip } from 'element-plus';
+import { ElTooltip, ElMessageBox } from 'element-plus';
 import useDrawer from '@/hooks/useDrawer';
 
 const sourceData = ref<Array<any>>([]); // 源数据缓存
@@ -352,8 +355,17 @@ const handleChangeColumns = (v:any[], t?:boolean) => {
   t && handleSetColumns(v)
 }
 const handleSetColumns = (v:any[]) => {
-  alert(`调用后端配置列${JSON.stringify(v)}`)
-} 
+  ElMessageBox.alert(
+    `<pre>${JSON.stringify(v, null, '\t')}</pre>`,
+    '提交后端做配置',
+    {
+      dangerouslyUseHTMLString: true,
+    }
+  )
+}
+const handleSelectionChange = (v:any[]) => {
+  console.log(v)
+}
 setTimeout(() => {
   loading.value = false;
   tableData.value = sourceData.value.slice(0, pagination.pageSize);
@@ -422,14 +434,15 @@ const options = reactive([
 <style lang="scss" scoped>
 .full {
   height: 100%;
-  ::v-deep .action-btn {
+  :deep(.action-btn) {
     display: flex;
+    padding: 0 10px;
     justify-content: space-between;
     .iconfont {
       color: var(--el-color-primary);
     }
   }
-  ::v-deep .status-container {
+  :deep(.status-container) {
     display: flex;
     align-items: center;
     .status-container__circle {

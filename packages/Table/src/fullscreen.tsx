@@ -4,10 +4,8 @@ export const useFullScreen = (fullscreen: any) => {
   const renderFullScreen = (): HTMLElement | undefined => {
     return (
       unref(fullscreen) && (
-        <div class="g-table-fullscreen" style={{ marginLeft: '10px' }}>
-          <a href="javascript:void(0)" onClick={handleFullScreen}>
-            <i className={`iconfont icon-fullscreen${unref(fullscreenStatus) ? '-exit' : ''}`}></i>
-          </a>
+        <div class="g-table-content__right--i" onClick={handleFullScreen}>
+          <i className={`iconfont icon-fullscreen${unref(fullscreenStatus) ? '-exit' : ''}`} />
         </div>
       )
     );

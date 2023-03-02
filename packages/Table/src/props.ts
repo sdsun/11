@@ -78,5 +78,9 @@ export default {
     type: Boolean,
     default: true
   },
+  isCheckMemory: {
+    type: Boolean,
+    default: false
+  },
   ...defaultProps,
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="dk-cs">
+  <div class="dk-cs g-table-content__right--i">
     <el-popover
       v-model:visible="visible"
       placement="top"
@@ -7,15 +7,14 @@
       trigger="click"
       popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px; padding: 0px;">
       <template #reference>
-        <el-button type="primary" link>
-          <i class="iconfont icon-setting" :style="{fontSize: '20px'}"/>
-        </el-button>
+        <i class="iconfont icon-setting" />
       </template>
       <ul class="dk-cs__body">
         <el-scrollbar max-height="360px">
           <draggable v-model="columns" item-key="prop" tag="transition-group" v-bind="dragOptions">
             <template v-for="(element, index) in columns" :key="index">
               <li v-show="element.label" class="dk-cs__item">
+                <i class="iconfont icon-move" :style="{ fontSize: '18px', marginRight: '8px', color: '#AAA', cursor: 'move' }" />
                 <el-checkbox v-model="element.show"></el-checkbox>
                 <div class="dk-cs__label"> {{ element.label }}</div>
                 <el-checkbox-group size="small" :model-value="[element.fixed]" @change="changeFixedHandle($event, element)">
@@ -96,6 +95,7 @@ function changeFixedHandle(value: any, item: any) {
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
+    color: #336ffd;
   }
   &__footer{
     border-top: 1px solid #EEE;

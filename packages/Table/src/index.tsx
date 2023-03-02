@@ -33,10 +33,13 @@ import {
   ElCheckboxGroup,
   ElCheckbox,
   ElTooltip,
-  ElAlert
+  ElAlert,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem
 } from 'element-plus';
 import ColumnsSetting from './Setting.vue'
-import { GTableProps } from '../types';
+import { GTableProps, Size } from '../types';
 import { useFullScreen } from './fullscreen';
 
 export default defineComponent({
@@ -76,6 +79,8 @@ export default defineComponent({
       pagination,
       copyable,
       checkable,
+      isCheckMemory,
+      showSelectTotal
     } = toRefs(props) as unknown as GTableProps;
     // columns列表中filterType不为false的数量
     const valueList = reactive(new Array(unref(columns).filter((item) => item.filterType).length).fill(''));
@@ -103,7 +108,8 @@ export default defineComponent({
     if (unref(checkable)) {
       unref(columns).unshift({
         type: 'selection',
-        width: 50
+        width: 60,
+        reserveSelection: isCheckMemory
       });
     }
     // 增加内部用于计数的方法__valueIdx
@@ -281,6 +287,7 @@ export default defineComponent({
           </ElTooltip>
         );
       };
+
       const defaultSlots = {
         default: (scope: any) => {
           if (cellRenderer) {
@@ -365,8 +372,6 @@ export default defineComponent({
       );
     };
 
-    const selectTotal = ref(0)
-
     expose({
       /** @description Get Table Instance */
       getTableRef,
@@ -375,20 +380,21 @@ export default defineComponent({
       /** @description Reset table columns filter value */
       resetFilter,
     });
-
+    // 渲染表格体
+    const selectTotal = ref(0);
     let renderTable = () => {
       const dbClickCopy = (row: any, column: any, cell: any) => {
         if (!unref(copyable) || !row[column.property]) return;
         copy(row[column.property]);
         ElMessage.success("Cell Copied!");
       };
-      const handleSelectChange = (v:[]) => {
+      const handleSelectChange = (v:any[]) => {
         selectTotal.value = v.length
       }
       return (
         <>
           {
-            props.showSelectTotal && selectTotal.value > 0 && <ElAlert
+            showSelectTotal && selectTotal.value > 0 && <ElAlert
               title={ `Selected ${selectTotal.value} term` }
               type="info"
               show-icon />
@@ -401,6 +407,8 @@ export default defineComponent({
             ref={`TableRef${props.key}`}
             onCellDblclick={dbClickCopy}
             onSelectionChange={handleSelectChange}
+            highlightCurrentRow
+            size={size.value}
           >
             {{
               default: () => unref(columns).map(renderColumns),
@@ -429,17 +437,58 @@ export default defineComponent({
         </>
       );
     };
+    // 渲染全屏配置
     const {renderFullScreen, fullscreenStatus} = useFullScreen(fullscreen);
+    // 渲染表格列配置
     const renderColumnsSetting = () => {
-      const handleUpdate = (v:any[], t?:boolean) => {
+      const handleUpdateColumns = (v:any[], t?:boolean) => {
         emit('changeColumns', v, t)
       }
       return (
-        <ColumnsSetting modelValue={props.columns} onUpdate={handleUpdate} />
+        <ColumnsSetting modelValue={props.columns} onUpdate={handleUpdateColumns} />
       )
     }
+    // 渲染表格大小配置
+    const size:Ref<Size> = ref('default')
+    const handleChangeSize = (v:Size) => {
+      size.value = v
+    }
+    const renderTableSize = () => {
+      const sizeList = [
+        {command: 'large', title: 'Large'},
+        {command: 'default', title: 'Default'},
+        {command: 'small', title: 'Small'}
+      ]
+      return (
+        <ElDropdown
+          onCommand={handleChangeSize}
+          v-slots={
+            {
+              dropdown: () => (
+                <ElDropdownMenu>
+                  {
+                    sizeList.map((item) => {
+                      return(
+                        <ElDropdownItem
+                          command={item.command}
+                          disabled={size.value === item.command}>
+                          {item.title}
+                        </ElDropdownItem>
+                      )
+                    })
+                  }
+                </ElDropdownMenu>
+              )
+            }
+          }>
+          <div class="g-table-content__right--i">
+            <i class="iconfont icon-column-height" />
+          </div>
+        </ElDropdown>
+      )
+    }
+    // 渲染表格
     return () => (
-      <>
       <div
         ref={`g-table-container__${props.key}`}
         class={`g-table-container ${unref(fullscreenStatus) ? 'g-table-fullscreen_t' : ''}`}
@@ -452,12 +501,12 @@ export default defineComponent({
           <div class="g-table-content__left">{slots.tableLeft && slots.tableLeft()}</div>
           <div class="g-table-content__right">
             {renderColumnsSetting()}
+            {renderTableSize()}
             {renderFullScreen()}
           </div>
         </div>
         { renderTable()}
       </div>
-      </>
     );
   },
 });

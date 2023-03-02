@@ -16,12 +16,10 @@ export default {
           <li class="table-column-show">列显示</li>
           <li class="table-column-fixed">列固定</li>
         </ul> -->
-        {{ listInCom }}
         <ul class="table-columns">
           <draggable v-model="listInCom" item-key="prop" tag="transition-group" v-bind="dragOptions">
             <!-- <transition-group type="transition" name="flip-list"> -->
             <li v-for="(element, ei) in listInCom" :key="ei" class="table-column-item">
-              <template v-if="element.label">
               <div class="table-column-check">
                 <el-checkbox v-model="element.show" :disabled="element.show && showedColumnsLength < 2"></el-checkbox>
               </div>
@@ -36,7 +34,6 @@ export default {
                   }}</el-checkbox-button>
                 </el-checkbox-group>
               </div>
-            </template>
             </li>
             <!-- </transition-group> -->
           </draggable>
@@ -72,7 +69,7 @@ const listInCom = computed({
     emits('update:model-value', v);
   },
   get() {
-    return props.modelValue;
+    return props.modelValue.filter(item => item.label);
   },
 });
 const showedColumnsLength = computed(() => (props.modelValue || []).filter((item) => item.show).length);

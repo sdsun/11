@@ -135,4 +135,8 @@ export interface GTableProps extends TableProps {
   copyable?: boolean;
   /** 新增 是否支持多选 */
   checkable?: boolean;
+  /** 新增 是否显示选中条 */
+  showSelectTotal?:boolean;
+  /** 新增 是否支持跨页选择 */
+  isCheckMemory?: boolean;
 }
